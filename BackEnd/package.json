@@ -1,0 +1,19 @@
+{
+  "name": "CourseWork",
+  "version": "1.0.0",
+  "description": "Course work for the University",
+  "scripts": {
+    "start": "nodemon ./dist/index.js",
+    "build": "rm -rf ./dist && tsc"
+  },
+  "main": "dist/index.js",
+  "author": "Bogdan Babitskiy",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^11.13.1",
+    "nodemon": "^1.18.10",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.1"
+  },
+  "dependencies": {}
+}
