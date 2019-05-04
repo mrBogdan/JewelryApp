@@ -1,21 +1,29 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <Header></Header>
+    <router-view/>
+    <Footer></Footer>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+<script>
+  import Header from './components/Header';
+  import Footer from './components/Footer';
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class App extends Vue {}
+  export default {
+    name: 'App',
+    components: {
+      Header,
+      Footer,
+    }
+  }
 </script>
 
-<style>
-
+<style lang="scss">
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
 </style>
