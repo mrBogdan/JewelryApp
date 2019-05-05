@@ -1,0 +1,5 @@
+{
+  "JewelryApiGateway": "http://localhost:9010",
+  "JewelryContentService": "http://localhost:9020",
+  "UserService": "http://localhost:9030"
+}
