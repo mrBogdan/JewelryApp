@@ -7,7 +7,7 @@ import api from './api/v1';
 const PORT = appConfig.port;
 
 app
-    .use('/api/v1/', api)
-    .listen(PORT, () => {
-        console.log('Server is running on ', PORT);
-    });
+   .use(api)
+   .listen(PORT, () => {
+       console.log('Server is running on ', PORT);
+   });

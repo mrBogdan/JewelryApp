@@ -1,7 +1,7 @@
 {
-  "name": "jewelry_api_gateway",
+  "name": "jewelry_content_service",
   "version": "1.0.0",
-  "description": "Api gateway for JewelrySPA",
+  "description": "Jewelry Content Service",
   "scripts": {
     "start": "nodemon",
     "build": "rm -rf ./dist && tsc"

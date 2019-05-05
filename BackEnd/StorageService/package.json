@@ -1,7 +1,7 @@
 {
-  "name": "user_service",
+  "name": "storage_service",
   "version": "1.0.0",
-  "description": "User Service",
+  "description": "Storage Service",
   "scripts": {
     "start": "nodemon",
     "build": "rm -rf ./dist && tsc"
