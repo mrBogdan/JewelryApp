@@ -33,6 +33,41 @@ const mockProducts = [
     alt: 'Alt of image',
     price: 20.22,
     currency: '$'
+  },
+  {
+    id: 3,
+    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
+    alt: 'Alt of image',
+    price: 20.22,
+    currency: '$'
+  },
+  {
+    id: 3,
+    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
+    alt: 'Alt of image',
+    price: 20.22,
+    currency: '$'
+  },
+  {
+    id: 3,
+    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
+    alt: 'Alt of image',
+    price: 20.22,
+    currency: '$'
+  },
+  {
+    id: 3,
+    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
+    alt: 'Alt of image',
+    price: 20.22,
+    currency: '$'
+  },
+  {
+    id: 3,
+    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
+    alt: 'Alt of image',
+    price: 20.22,
+    currency: '$'
   }
 ];
 

@@ -22,7 +22,6 @@
     @import "../styles/colors"
 
     .productList
-        border: 1px solid
         display: grid
         grid-template-columns: repeat(3, 1fr)
         grid-gap: 20px

@@ -24,18 +24,21 @@
     @import '../styles/button'
     @import '../styles/colors'
 
-    $border-color: $red
+    $border-color: #96d0ff
+    $border-width: 1px
 
     .product
+        z-index: 22
         width: 100%
         display: flex
         flex-direction: column
         justify-content: center
         align-items: center
         position: relative
-        border: 1px solid $grey
 
         &__image
             width: 250px
 
+    .product:hover
+        box-shadow: 0px 0px 2px $blue-shadow-color
 </style>

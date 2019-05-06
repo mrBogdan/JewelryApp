@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Header></Header>
-    <router-view/>
+    <div class="page-container">
+      <router-view/>
+    </div>
     <Footer></Footer>
   </div>
 </template>
@@ -21,4 +23,9 @@
 
 <style lang="sass">
 @import "styles/main"
+@import "styles/variables"
+
+.page-container
+  padding: $header-height $side-padding 0 $side-padding
+
 </style>

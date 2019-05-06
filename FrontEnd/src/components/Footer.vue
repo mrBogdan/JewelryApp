@@ -21,8 +21,8 @@
     .footer
         height: 50px
         width: 100%
-        background-color: $blue
-        color: $dark-blue
+        background-color: #fff
+        color: #000
         display: flex
         justify-content: center
         align-items: center
