@@ -1,13 +1,12 @@
 <template>
     <div>
-        <h2>Product</h2>
-        <div>{{ $route.params.id }}</div>
+        <p></p>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'ProductPage'
+        name: 'CategoryPage'
     };
 </script>
 

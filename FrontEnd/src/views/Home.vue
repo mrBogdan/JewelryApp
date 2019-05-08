@@ -1,20 +1,21 @@
 <template>
   <div class="home">
-    <p>Home page</p>
-    <product-list :title="categoryName">
-      <product v-for="(product, index) in products" :key="index"  :product-item="product"></product>
-    </product-list>
+      <product-list :title="categoryName">
+        <product v-for="(product, index) in products" :key="index"  :product-item="product"></product>
+      </product-list>
   </div>
 </template>
 
 <script>
 import product from '../components/Product';
 import productList from '../components/ProductList';
+import Sidebar from '../components/Sidebar';
 
 
 const mockProducts = [
   {
     id: 1,
+    name: 'So cool name for item',
     imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
     alt: 'Alt of image',
     price: 20.22,
@@ -22,6 +23,7 @@ const mockProducts = [
   },
   {
     id: 2,
+    name: 'So cool name for item',
     imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
     alt: 'Alt of image',
     price: 20.22,
@@ -29,41 +31,31 @@ const mockProducts = [
   },
   {
     id: 3,
+    name: 'So cool name for item',
     imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
     alt: 'Alt of image',
     price: 20.22,
     currency: '$'
   },
   {
-    id: 3,
+    id: 4,
+    name: 'So cool name for item',
     imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
     alt: 'Alt of image',
     price: 20.22,
     currency: '$'
   },
   {
-    id: 3,
+    id: 5,
+    name: 'So cool name for item',
     imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
     alt: 'Alt of image',
     price: 20.22,
     currency: '$'
   },
   {
-    id: 3,
-    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-    alt: 'Alt of image',
-    price: 20.22,
-    currency: '$'
-  },
-  {
-    id: 3,
-    imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-    alt: 'Alt of image',
-    price: 20.22,
-    currency: '$'
-  },
-  {
-    id: 3,
+    id: 6,
+    name: 'So cool name for item',
     imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
     alt: 'Alt of image',
     price: 20.22,
@@ -82,6 +74,9 @@ export default {
   components: {
     productList,
     product,
+    Sidebar,
   }
 }
 </script>
+
+<style lang="sass" scoped></style>

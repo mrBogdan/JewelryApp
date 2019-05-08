@@ -1,8 +1,11 @@
 <template>
     <div class="product">
-        <router-link :to="{ name: 'product', params: { productId: productItem.id } }">
+        <router-link :to="{ name: 'product', params: { id: productItem.id } }">
             <img :src="productItem.imagePath" :alt="productItem.alt" class="product__image">
         </router-link>
+        <div class="">
+            <span>{{ productItem.name }}</span>
+        </div>
         <div class="price">
             <span class="price__amount">{{ productItem.price }} </span>
             <span class="price__currency">{{ productItem.currency }}</span>
@@ -40,5 +43,5 @@
             width: 250px
 
     .product:hover
-        box-shadow: 0px 0px 2px $blue-shadow-color
+        box-shadow: 2px 2px 4px $shadow-color
 </style>
