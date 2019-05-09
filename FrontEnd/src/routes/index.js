@@ -9,7 +9,7 @@ export default [
     {
         path: '/',
         name: 'home',
-        component: Home
+        component: Home,
     },
     {
         path: '/about',

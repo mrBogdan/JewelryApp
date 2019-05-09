@@ -40,8 +40,8 @@
         position: relative
 
         &__image
-            width: 250px
+            width: 100%
 
     .product:hover
-        box-shadow: 2px 2px 4px $shadow-color
+        box-shadow: 1px 1px 3px 2px $shadow-color
 </style>

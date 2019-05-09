@@ -1,7 +1,7 @@
 <template>
-    <div class="footer">
+    <footer class="footer">
         {{ footerText }}
-    </div>
+    </footer>
 </template>
 
 <script>
@@ -9,7 +9,7 @@
         name: "Footer",
         data: function () {
             return {
-                footerText: "Jewelry Single Page App | 2019 | ©"
+                footerText: `Jewelry Single Page App | ${new Date().getFullYear()} | ©`
             }
         }
     }
@@ -17,13 +17,16 @@
 
 <style scoped lang="sass">
     @import '../styles/colors'
+    @import '../styles/variables'
 
     .footer
-        height: 50px
+        height: $footer-height
         width: 100%
-        background-color: black
-        color: #fff
+        background-color: $grey
         display: flex
         justify-content: center
         align-items: center
+        position: absolute
+        left: 0
+        bottom: 0
 </style>

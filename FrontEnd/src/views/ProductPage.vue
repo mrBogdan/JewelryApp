@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="product-page">
         <h2>Product</h2>
         <div>{{ $route.params.id }}</div>
     </div>
@@ -11,6 +11,4 @@
     };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped lang="sass"></style>

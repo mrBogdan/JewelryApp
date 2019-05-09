@@ -1,7 +1,7 @@
 <template>
   <div class="home">
       <product-list :title="categoryName">
-        <product v-for="(product, index) in products" :key="index"  :product-item="product"></product>
+        <product v-for="(product, index) in products" :key="index" :product-item="product"></product>
       </product-list>
   </div>
 </template>
@@ -9,8 +9,6 @@
 <script>
 import product from '../components/Product';
 import productList from '../components/ProductList';
-import Sidebar from '../components/Sidebar';
-
 
 const mockProducts = [
   {
@@ -74,7 +72,6 @@ export default {
   components: {
     productList,
     product,
-    Sidebar,
   }
 }
 </script>
