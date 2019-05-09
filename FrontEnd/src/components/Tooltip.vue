@@ -32,7 +32,7 @@
         border-radius: 6px
         padding: 5px 0
         position: absolute
-        z-index: 1
+        z-index: 100
         top: $icon-container-width
         left: -74%
         transition: opacity 0.3s

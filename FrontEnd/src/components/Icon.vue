@@ -1,8 +1,8 @@
 <template>
     <div class="icon-wrapper">
-        <div class="icon ripple" @mouseover="showTooltipMethod(true)" @mouseleave="showTooltipMethod(false)">
+        <button class="icon ripple btn" @mouseover="showTooltipMethod(true)" @mouseleave="showTooltipMethod(false)">
             <font-awesome-icon :icon="icon" size="lg" />
-        </div>
+        </button>
         <tooltip :position="tooltipPosition" :show="showTooltip" >{{ tooltipText }}</tooltip>
     </div>
 </template>
@@ -20,16 +20,29 @@
                 showTooltip: false
             }
         },
-        props: [
-            'icon',
-            'tooltipText',
-            'tooltipPosition'
-        ],
+        props: {
+            icon: {
+                type: Object,
+                required: true
+            },
+            tooltipText: {
+                type: String,
+                require: false
+            },
+            tooltipPosition: {
+                type: String,
+                require: false,
+            },
+            onClick: {
+                type: Function,
+                default: () => {},
+                required: false
+            }
+        },
         methods: {
             showTooltipMethod(doShow) {
-                if (doShow && this.tooltipText) this.showTooltip = true;
-                else this.showTooltip = false
-            }
+                this.showTooltip = !!(doShow && this.tooltipText);
+            },
         }
     };
 </script>
@@ -50,8 +63,7 @@
         align-items: center
         cursor: pointer
         border-radius: 50%
-        transition: all .5s
-
+        transition: background-color .5s, color .5s
         &:hover
             background-color: $icon-hover-grey
             color: $dark-blue-grey

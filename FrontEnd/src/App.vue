@@ -52,7 +52,7 @@
 @import "styles/variables"
 
 .page-container
-  padding: $header-height $side-padding $footer-height $side-padding
+  padding: $header-height $side-padding ($footer-height * 2) $side-padding
   display: grid
   grid-template-columns: 20% 75%
   grid-column-gap: 5%

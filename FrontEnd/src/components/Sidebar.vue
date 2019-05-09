@@ -30,6 +30,7 @@
             list-style: none
 
     .category-item > a
+        font-size: 15px
         display: block
         padding: 15px
         border-bottom: 1px solid $shadow-color
