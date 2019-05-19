@@ -1,10 +1,7 @@
 import * as express from 'express';
+import { Express } from 'express';
 import router from './routers';
 
-const { services } = require('../../../config/app.json');
+const app: Express = express();
 
-const app = express();
-
-app.use(router);
-
-export default app;
+export default router(app);

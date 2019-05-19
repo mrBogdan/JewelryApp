@@ -4,5 +4,11 @@
     "JewelryApiGateway": "http://localhost:9010",
     "JewelryContentService": "http://localhost:9020",
     "UserService": "http://localhost:9030"
+  },
+  "database": {
+    "user": "SA",
+    "password": "12345678Bg",
+    "server": "localhost",
+    "database": "Jewelry"
   }
 }

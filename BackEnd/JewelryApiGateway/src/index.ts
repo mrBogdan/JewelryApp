@@ -1,13 +1,16 @@
 import * as express from 'express';
+import logger from './modules/logger'
+const morgan = require('morgan');
 
-const appConfig = require('../config/app.json');
+const config = require('../config');
 const app = express();
 import api from './api/v1';
 
-const PORT = appConfig.port;
+const PORT = config.get('port');
 
 app
+    .use(morgan(':method :url :status :response-time ms'))
     .use('/api/v1/', api)
     .listen(PORT, () => {
-        console.log('Server is running on ', PORT);
+        logger.info(`Server is running on ${PORT}`);
     });
