@@ -1,7 +1,18 @@
-import categoryRouter from './category.router'
+import { Router } from 'express'
 
-export default (app) => {
-    app.use('/categories', categoryRouter);
+const expressHttpProxy = require('express-http-proxy');
+const config = require('../../../../config');
 
-    return app
-};
+const router: Router = Router();
+const contentServiceUrl = config.get('services').JewelryContentService;
+console.log(contentServiceUrl);
+
+router
+    .route('/all')
+    .get(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req: Request) => {
+            return `/api/v1/categories/all`;
+        }
+    }));
+
+export default router;

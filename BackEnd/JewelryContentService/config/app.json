@@ -1,3 +1,9 @@
 {
-  "port": 9020
+  "port": 9020,
+  "database": {
+    "user": "SA",
+    "password": "12345678Bg",
+    "server": "localhost",
+    "database": "Jewelry"
+  }
 }

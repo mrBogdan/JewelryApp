@@ -4,4 +4,7 @@ import router from './routers';
 
 const app: Express = express();
 
-export default router(app);
+app
+    .use(router);
+
+export default app;

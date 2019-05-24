@@ -1,12 +1,7 @@
-import express = require('express');
-import { MainController } from '../controllers/main.controller';
+import categoryRouter from './category.router'
 
-const router = express.Router();
-const mainController = new MainController();
+export default (app) => {
+    app.use('/categories', categoryRouter);
 
-
-router
-    .route('/')
-    .get(mainController.get.bind(mainController));
-
-export default router;
+    return app
+};
