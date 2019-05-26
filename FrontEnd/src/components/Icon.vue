@@ -1,23 +1,27 @@
 <template>
     <div class="icon-wrapper">
-        <button class="icon ripple btn" @mouseover="showTooltipMethod(true)" @mouseleave="showTooltipMethod(false)">
+        <button class="icon ripple btn" @click="onClick" @mouseover="showTooltipMethod(true)" @mouseleave="showTooltipMethod(false)">
             <font-awesome-icon :icon="icon" size="lg" />
         </button>
         <tooltip :position="tooltipPosition" :show="showTooltip" >{{ tooltipText }}</tooltip>
+        <popup :pop-up-items="popupItems" :to-open="showPopup && hasPopup"></popup>
     </div>
 </template>
 
 <script>
     import Tooltip from '../components/Tooltip'
+    import Popup from '../components/Popup/Popup'
 
     export default {
         name: 'Icon',
         components: {
-          Tooltip
+            Tooltip,
+            Popup,
         },
         data: function() {
             return {
-                showTooltip: false
+                showTooltip: false,
+                showPopup: false
             }
         },
         props: {
@@ -33,10 +37,16 @@
                 type: String,
                 require: false,
             },
+            hasPopup: {
+                type: Boolean,
+                default: false
+            },
             onClick: {
-                type: Function,
-                default: () => {},
-                required: false
+              type: Function,
+              default: () => {},
+            },
+            popupItems: {
+                type: []
             }
         },
         methods: {

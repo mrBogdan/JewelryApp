@@ -3,7 +3,7 @@
     <div class="page-wrapper">
       <Header></Header>
       <div class="page-container">
-        <sidebar :title="sideBarTitle" class="side-bar" :categories-array="categoriesList"></sidebar>
+        <sidebar :title="sideBarTitle" class="side-bar" :categories-array="categories"></sidebar>
         <router-view/>
       </div>
       <Footer></Footer>
@@ -15,8 +15,11 @@
   import Header from './components/Header';
   import Footer from './components/Footer';
   import Sidebar from './components/Sidebar';
-  import { CategoryService } from './services'
+  import { CategoriesActions } from './store/modules/categories';
+  import { mapGetters } from 'vuex';
+  import { ProductsActions } from './store/modules/products';
 
+/*
   const mockCategories = [
     {
       id: 1,
@@ -31,6 +34,7 @@
       name: 'CategoryItem 3',
     }
   ];
+*/
 
   export default {
     name: 'App',
@@ -41,12 +45,20 @@
     },
     data: function() {
       return {
-        sideBarTitle: 'Categories',
-        categoriesList: mockCategories
+
       }
     },
-    beforeCreate() {
-
+    computed: {
+      sideBarTitle: function () {
+        return 'Something';
+      },
+      ...mapGetters([
+        'categories'
+      ])
+    },
+    created() {
+      this.$store.dispatch( CategoriesActions.SET_ALL_CATEGORIES );
+      this.$store.dispatch( ProductsActions.SET_ALL_PRODUCTS );
     }
   }
 </script>

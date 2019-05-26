@@ -4,6 +4,7 @@ import NotFound from '../views/NotFound';
 import ProductPage from '../views/ProductPage';
 import Categories from '../views/Categories';
 import CategoryPage from '../views/CategoryPage';
+import SignUpPage from '../views/SignUpPage';
 
 export default [
     {
@@ -36,5 +37,11 @@ export default [
     {
         path: '*',
         component: NotFound
+    },
+    {
+        path: '/authorization',
+        name: 'authorization',
+        component: SignUpPage
+
     }
 ];

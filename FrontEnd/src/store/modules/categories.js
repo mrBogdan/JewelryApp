@@ -5,7 +5,7 @@ export const CategoriesMutations = {
 };
 
 export const CategoriesActions = {
-    GET_ALL_CATEGORIES: 'GET_ALL_CATEGORIES'
+    SET_ALL_CATEGORIES: 'SET_ALL_CATEGORIES'
 };
 
 const state = {
@@ -19,10 +19,11 @@ const getters = {
 };
 
 const actions = {
-    [CategoriesActions.GET_ALL_CATEGORIES]({ commit }) {
+    async [CategoriesActions.SET_ALL_CATEGORIES]({ commit }) {
         const categoryService = new CategoryService();
-        categoryService.getCategories()
-            .then(categories => commit(CategoriesMutations.SET_CATEGORIES, categories))
+        const categories = await categoryService.getCategories();
+        console.log('CAT', categories.data.data);
+        commit(CategoriesMutations.SET_CATEGORIES, categories.data.data);
     }
 };
 

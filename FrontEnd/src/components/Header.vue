@@ -4,21 +4,18 @@
             <div class="logo">
                 <router-link to="/"><span class="logo-text">J</span></router-link>
             </div>
-            <!--
-            <div id="nav">
-                <router-link to="/categories">Categories</router-link> |
-                <router-link to="/about">About</router-link>
-            </div>-->
             <div>
                 <div class="search" >
-                    <icon :icon="faSearch" @click="" class="search-icon" />
+                    <div>
+                        <icon :icon="faSearch" :on-click="search" class="search-icon" />
+                    </div>
                     <input type="text" autocomplete="off" class="search-field" name="search" placeholder="Search ... ">
                 </div>
             </div>
             <div class="actions">
                 <icon :icon="faQuestionCircle" :tooltip-text="'Help'" />
                 <icon :icon="faShoppingCart" :tooltip-text="'Your Cart'"/>
-                <icon :icon="faSignInAlt" :tooltip-text="'Sign in'" />
+                <icon :has-popup="true" :icon="faSignInAlt"  :tooltip-text="'Sign in'" />
             </div>
         </div>
     </header>
@@ -45,6 +42,11 @@
                 state: 'close'
             }
         },
+        methods: {
+            search() {
+                console.log('SEARCH');
+            }
+        }
     }
 
     let prevScrollPos = window.pageYOffset;

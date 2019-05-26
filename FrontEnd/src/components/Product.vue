@@ -1,14 +1,14 @@
 <template>
-    <div class="product" >
-        <div class="add-to-cart" @click="addToCart(productItem.id)">
-            <icon :icon="faCartPlus" @mousedown="addToCart(productItem.id)" :tooltip-text="'Add to cart'" />
+    <div v-if="productItem.isActive" class="product" >
+        <div class="add-to-cart" @click="addToCart(productItem.idProduct)">
+            <icon :icon="faCartPlus" :tooltip-text="'Add to cart'" />
         </div>
-        <router-link :to="{ name: 'product', params: { id: productItem.id } }">
-            <img :src="productItem.imagePath" :alt="productItem.alt" class="product__image">
+        <router-link :to="{ name: 'product', params: { id: productItem.idProduct } }">
+            <img :src="productItem.imagePath" class="product__image">
 
         <div class="product-value">
-            <div class="product__name" :title="productItem.name">
-                <span class="with-underline--hover">{{ productItem.name }}</span>
+            <div class="product__name" :title="productItem.productName">
+                <span class="with-underline--hover">{{ productItem.productName }}</span>
             </div>
             <div class="price">
                 <span class="price__amount">{{ productItem.price }} </span>

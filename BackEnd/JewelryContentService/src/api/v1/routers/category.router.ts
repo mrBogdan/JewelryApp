@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { CategoryController } from '../controllers/category.controller'
+import { CategoryController } from '../controllers';
 
 const categoryController: CategoryController = new CategoryController();
 
-const router: Router = Router();
+const categoryRouter: Router = Router();
 
-router
+categoryRouter
     .route('/all')
     .get(categoryController.get.bind(categoryController));
 
-export default router;
+export default categoryRouter;

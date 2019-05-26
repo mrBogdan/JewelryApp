@@ -2,8 +2,8 @@
     <div class="sidebar-container">
         <h2>{{ title }} <i class="fa fa-id-card" aria-hidden="true"></i></h2>
         <ul class="category-list">
-            <li v-for="(category, index) in categoriesArray" :key="index" class="category-item">
-                <router-link :to="{ name: 'category', params: { id: category.id } }">{{ category.name }}</router-link>
+            <li v-if="category.isActive" v-for="(category, index) in categoriesArray" :key="index" class="category-item">
+                <router-link :to="{ name: 'category', params: { id: category.idCategory } }">{{ category.categoryName }}</router-link>
             </li>
         </ul>
     </div>

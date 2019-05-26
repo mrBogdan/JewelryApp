@@ -1,7 +1,11 @@
 import * as express from 'express';
 import { Express } from 'express';
-import router from './routers';
+
+import { categoryRouter, productRouter } from './routers';
 
 const app: Express = express();
 
-export default router(app);
+app.use('/category', categoryRouter);
+app.use('/product', productRouter);
+
+export default app;

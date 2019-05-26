@@ -1,7 +1,7 @@
-import categoryRouter from './category.router'
+import productRouter from './product.router';
+import categoryRouter from './category.router';
 
-export default (app) => {
-    app.use('/categories', categoryRouter);
-
-    return app
-};
+export {
+    productRouter,
+    categoryRouter,
+}

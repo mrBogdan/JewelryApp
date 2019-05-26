@@ -1,12 +1,10 @@
 import express = require('express');
-import { MainController } from '../controllers/main.controller';
+import { Express } from 'express';
+import userRouter from './user.router';
 
-const router = express.Router();
-const mainController = new MainController();
+const app: Express = express();
+
+app.use('/user', userRouter);
 
 
-router
-    .route('/')
-    .get(mainController.get.bind(mainController));
-
-export default router;
+export default app;
