@@ -9,17 +9,27 @@ export class UserService {
         this.db = dbPromise;
     }
 
-    public async getUserById(id: number) {
+    public async getUserById(id: number): Promise<IUser> {
         const pool = await this.db;
+        const user = await pool.request()
+            .input('id', mssql.Int, id)
+            .query('SELECT * FROM JUser WHERE idUser = @id');
+
+        if (user.recordset.length !== 0) {
+            return Promise.resolve(user.recordset);
+        } else {
+
+        }
     }
 
-    public async signup(user: IUser) {
+    public async create(user: IUser) {
         try {
             const pool = await this.db;
             const count = await pool.request()
                 .input('email', mssql.VarChar(255), user.email)
                 .query(`SELECT * FROM JUser WHERE vEmail = @email`);
             if (count.recordset.length === 0) {
+
                 const insert = await pool.request()
                     .input('firstName', mssql.VarChar(255), user.firstName)
                     .input('lastName', mssql.VarChar(255), user.lastName)
@@ -36,13 +46,15 @@ export class UserService {
         }
     }
 
-    public async signin() {
+    public async getUserByEmailAndPassword(email: string, password: string) {
         try {
             const pool = await this.db;
             const getUser = await pool.request()
-                .input('email', mssql.VarChar(255), req.body.email)
-                .input('password', mssql.VarChar(255), req.body.password)
+                .input('email', mssql.VarChar(255), email)
+                .input('password', mssql.VarChar(255), password)
                 .query('SELECT * FROM JUser WHERE vEmail = @email AND vPassword = @password');
+
+            return getUser.recordset;
 
         } catch(err) {
             logger.error(err);

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import Tooltip from '../components/Tooltip'
+    import Tooltip from './BaseTooltip'
     import Popup from '../components/Popup/Popup'
 
     export default {

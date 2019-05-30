@@ -1,13 +1,20 @@
 import * as express from 'express';
-
-const appConfig: any = require('../config/app.json');
-const app: express = express();
+import logger from './modules/logger'
 import api from './api/v1';
+import * as bodyParser from 'body-parser';
 
-const PORT: number = appConfig.port;
+const morgan = require('morgan');
+const config = require('../config');
+
+const app = express();
+
+const PORT = config.get('port');
 
 app
-   .use('/api/v1/', api)
-   .listen(PORT, () => {
-       console.log('Server is running on ', PORT);
-   });
+    .use(bodyParser.urlencoded({ extended: false }))
+    .use(bodyParser.json())
+    .use(morgan(':method :url :status :response-time ms'))
+    .use('/api/v1/', api)
+    .listen(PORT, () => {
+        logger.info(`Server is running on ${PORT}`);
+    });

@@ -1,5 +1,5 @@
 {
-  "exec": "yarn run build && yarn run start",
+  "exec": "yarn run build && node dist/index.js",
   "watch": ["src"],
   "ext": "ts"
 }

@@ -20,34 +20,40 @@
  */
 
 import { IValidatorProperty } from '../../interfaces/modules/validator/IValidatorProperty';
-import { IRuleResponce } from './rules';
-import { IValidatorResponce } from '../../interfaces/modules/validator/IValidatorResponce';
+import { IRule, IRuleResponse } from './rules';
+import { IValidatorResponse } from '../../interfaces/modules/validator/IValidatorResponse';
 
-export function validator(object: IValidatorProperty[]): IValidatorResponce[] {
-    let result: IValidatorResponce[] = [];
+export function validator(object: IValidatorProperty[]): IValidatorResponse[] {
+    let result: IValidatorResponse[] = [];
 
     object.forEach((item: IValidatorProperty) => {
         const fieldName: string = item.field.fieldName;
         const value: any = item.field.value;
         const rules: any[] = item.field.rules;
-        const oResult: IValidatorResponce = {
+        const oResult: IValidatorResponse = {
             fieldName,
             value,
             hasError: false,
             errors: []
         };
 
-        rules.forEach((rule: { check: (value: any, args) => IRuleResponce, params: {} }) => {
-            let checkedRule: IRuleResponce = {};
+        rules.forEach((rule: IRule) => {
+            let checkedRule: IRuleResponse = {
+                isError: false,
+                msg: ''
+            };
 
             if (typeof rule === 'object') {
+                // @ts-ignore
                 checkedRule = rule.check(value, ...rule.params);
 
             } else if (typeof rule === 'function'){
+                // @ts-ignore
                 checkedRule = rule(value);
             }
 
             oResult.hasError = checkedRule.isError;
+            // @ts-ignore
             checkedRule.isError && oResult.errors.push(checkedRule.msg);
         });
 

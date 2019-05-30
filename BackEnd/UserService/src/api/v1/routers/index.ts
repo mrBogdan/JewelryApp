@@ -6,5 +6,4 @@ const app: Express = express();
 
 app.use('/user', userRouter);
 
-
 export default app;

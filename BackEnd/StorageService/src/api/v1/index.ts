@@ -1,7 +1,5 @@
 import * as express from 'express';
-import router from './routers';
-
-const { services } = require('../../../config/app.json');
+import { router } from './routers';
 
 const app = express();
 

@@ -26,7 +26,7 @@
     import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
     import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
     import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-    import Icon from '../components/Icon'
+    import Icon from './BaseIcon'
 
     export default {
         name: "Header",

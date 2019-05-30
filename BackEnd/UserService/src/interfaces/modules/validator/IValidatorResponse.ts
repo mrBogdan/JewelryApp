@@ -1,4 +1,4 @@
-export interface IValidatorResponce {
+export interface IValidatorResponse {
     fieldName: string;
     value: any;
     hasError: boolean;

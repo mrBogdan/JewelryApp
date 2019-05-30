@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import Icon from './Icon'
+    import Icon from './BaseIcon'
     import { faCartPlus } from '@fortawesome/free-solid-svg-icons'
 
     export default {

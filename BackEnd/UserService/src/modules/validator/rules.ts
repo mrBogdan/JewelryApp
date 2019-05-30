@@ -3,6 +3,11 @@ export interface IRuleResponse {
     msg: string;
 }
 
+export interface IRule {
+    check: (value: any, args?: any) => IRuleResponse,
+    params: {},
+}
+
 export function hasLessThenLength(value: string, neededLength: number, fieldName: string = ''): IRuleResponse {
     return {
         isError: !(value.length < neededLength),

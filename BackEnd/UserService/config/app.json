@@ -21,5 +21,11 @@
     },
     "resave": false,
     "saveUninitialized": false
+  },
+  "services": {
+    "JewelryApiGateway": "http://localhost:9010",
+    "JewelryContentService": "http://localhost:9020",
+    "OrderService": "http://localhost:9040",
+    "StorageService": "http://localhost:9050"
   }
 }
