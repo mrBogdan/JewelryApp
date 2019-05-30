@@ -25,26 +25,40 @@ export class UserService {
     public async create(user: IUser) {
         try {
             const pool = await this.db;
-            const count = await pool.request()
-                .input('email', mssql.VarChar(255), user.email)
-                .query(`SELECT * FROM JUser WHERE vEmail = @email`);
-            if (count.recordset.length === 0) {
-
-                const insert = await pool.request()
-                    .input('firstName', mssql.VarChar(255), user.firstName)
-                    .input('lastName', mssql.VarChar(255), user.lastName)
-                    .input('email', mssql.VarChar(255), user.email)
-                    .input('password', mssql.VarChar(255), user.password)
-                    .input('isAdmin', mssql.Bit, +user.isAdmin)
-                    .input('imageUrl', mssql.VarChar(255), user.imageUrl)
-                    .input('address', mssql.VarChar(255), user.address)
-                    .input('phone', mssql.VarChar(255), user.phone)
-                    .query('INSERT INTO JUser VALUES (@firstName, @lastName, @email, @password, @isAdmin, @imageUrl, @address, @phone)');
+            if (await this.isEmailRegistered(user.email)) {
+                throw new Error('User with this email has been registered!');
             }
+
+            await pool.request()
+                .input('firstName', mssql.VarChar(255), user.firstName)
+                .input('lastName', mssql.VarChar(255), user.lastName)
+                .input('email', mssql.VarChar(255), user.email)
+                .input('password', mssql.VarChar(255), user.password)
+                .input('isAdmin', mssql.Bit, +user.isAdmin)
+                .input('imageUrl', mssql.VarChar(255), user.imageUrl)
+                .input('address', mssql.VarChar(255), user.address)
+                .input('phone', mssql.VarChar(255), user.phone)
+                .query('INSERT INTO JUser VALUES (@firstName, @lastName, @email, @password, @isAdmin, @imageUrl, @address, @phone)');
+
+            return pool.request().query('SELECT * FROM JUser WHERE idUser = @@identity')
+                .then((user: any) => {
+                    return user.recordset.shift();
+                });
+
         } catch (err) {
-            logger.error(err);
+            throw err;
         }
     }
+
+    public async isEmailRegistered(email: string) {
+        const pool = await this.db;
+        const count = await pool.request()
+            .input('email', mssql.VarChar(255), email)
+            .query(`SELECT * FROM JUser WHERE vEmail = @email`);
+
+        return !!count.recordset.length;
+    }
+
 
     public async getUserByEmailAndPassword(email: string, password: string) {
         try {
@@ -56,7 +70,7 @@ export class UserService {
 
             return getUser.recordset;
 
-        } catch(err) {
+        } catch (err) {
             logger.error(err);
         }
     }

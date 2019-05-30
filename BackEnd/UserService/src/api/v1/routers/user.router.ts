@@ -9,7 +9,7 @@ const userController = new UserController(userService);
 const router = express.Router();
 
 router
-    .post('/signup', userController.signup.bind(userController))
+    .post('/signup', upload.single('file'), userController.signup.bind(userController))
     .post('/signin', userController.signin.bind(userController))
     .post('/logout', userController.logout.bind(userController));
 

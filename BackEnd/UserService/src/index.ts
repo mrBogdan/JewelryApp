@@ -3,6 +3,7 @@ import logger from './modules/logger'
 import * as session from 'express-session'
 import api from './api/v1';
 import * as bodyParser from 'body-parser';
+import errorHttpHadler from './modules/handlers/errorHttpHadler';
 
 const MSSQLStore = require('connect-mssql')(session);
 const morgan = require('morgan');
@@ -24,6 +25,7 @@ app
     }))
     .use(morgan(':method :url :status :response-time ms'))
     .use('/api/v1/', api)
+    .use(errorHttpHadler)
     .listen(PORT, () => {
         logger.info(`Server is running on ${PORT}`);
     });

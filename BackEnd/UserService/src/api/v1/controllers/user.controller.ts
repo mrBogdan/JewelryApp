@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../../../services';
 import { ISignupRequest } from '../../../interfaces/api/ISignupRequest';
-import * as multiparty from 'multiparty';
+import * as fs from 'fs';
 import * as request from 'request';
-import { ISignupUser } from '../../../interfaces/models/ISignupUser';
 import { IUser } from '../../../interfaces/models/IUser';
-import { createRequest } from '../../../modules/utils';
 import logger from '../../../modules/logger';
+import { upload } from '../../../modules/uploader';
+import * as url from 'url';
+import { createRequest } from '../../../modules/utils';
 
 const config = require('../../../../config');
 
@@ -18,30 +19,52 @@ export class UserController {
     }
 
     public signup(req: ISignupRequest, res: Response, next: NextFunction) {
-        const form = new multiparty.Form();
-        form.on('part', (part: any) => {
-            request.post(`${config.get('services:StorageService')}/api/v1/upload`, {
-                form: {
-                    file: part
+        console.log('TMP FILE PATH: ', req.file);
+        const tmpFilePath = req.file.path;
+        const fileReadStream = fs.createReadStream(tmpFilePath);
+
+        this.userService.isEmailRegistered(req.body.email)
+            .then((isRegistered: boolean) => {
+                if (isRegistered) {
+                    throw new Error('User with this email has been registered!');
                 }
-            });
-        });
 
-        form.parse(req);
-        res.sendStatus(200);
-        /*const user: IUser = {
-            firstName: body.firstName,
-            lastName: body.lastName,
-            address: body.address,
-            email: body.email,
-            imageUrl: ,
-            isAdmin: false,
-            password: body.password,
-            phone: body.phone
-        };
+                createRequest(`${config.get('services:StorageService')}/api/v1/upload`, 'POST', {
+                    formData: {
+                        file: fileReadStream
+                    }
+                })
+                    .then((fileInfo: any) => {
+                        fs.unlink(tmpFilePath, (err: any) => {
+                            if (err) {
+                                logger.error(err);
+                                throw err;
+                            }
 
-        this.userService.create(user)
-            .catch(next);*/
+                            logger.info('File was cleaned');
+                        });
+                        
+                        console.log(fileInfo);
+
+                        const user: IUser = {
+                            firstName: req.body.firstName,
+                            lastName: req.body.lastName,
+                            address: req.body.address,
+                            email: req.body.email,
+                            imageUrl: `${config.get('services:StorageService')}/api/v1/${fileInfo['nvFileName']}/name`,
+                            isAdmin: false,
+                            password: req.body.password,
+                            phone: req.body.phone
+                        };
+                        this.userService.create(user)
+                            .then((user: any) => {
+                                res.send(user);
+                            })
+                            .catch(next);
+                    });
+            })
+            .catch(next);
+
     }
 
     public signin(req: Request, res: Response, next: NextFunction) {
