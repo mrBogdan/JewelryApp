@@ -55,7 +55,8 @@ export class UserService {
         const count = await pool.request()
             .input('email', mssql.VarChar(255), email)
             .query(`SELECT * FROM JUser WHERE vEmail = @email`);
-
+        
+        console.log('COUNT', !!count.recordset.length);
         return !!count.recordset.length;
     }
 

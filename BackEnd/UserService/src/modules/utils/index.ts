@@ -1,6 +1,7 @@
 import * as request from 'request';
 import * as Url from 'url';
 import { IFileServiceResponse } from '../../interfaces/api/IFileServiceResponse';
+import { DEFAULT } from '../../consts';
 
 export class Utils {}
 
@@ -38,7 +39,7 @@ export function createRequest(url: string, method: string, data: any = null, opt
     });
 }*/
 
-export function createRequest(url, method, option): Promise<IFileServiceResponse> {
+export function createRequest(url, method, option): Promise<string> {
     return new Promise((resolve, reject) => {
         const extendedOptions = {...option, method};
         request(url, extendedOptions, (err: any, res: any, body: any) => {
@@ -53,8 +54,8 @@ export function createRequest(url, method, option): Promise<IFileServiceResponse
 
 export function toUpload(filePath: string): boolean {
     const not = [
-        'default.jpg'
+        DEFAULT
     ];
 
-    return not.includes(filePath);
+    return !not.includes(filePath);
 }

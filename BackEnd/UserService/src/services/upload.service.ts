@@ -13,7 +13,14 @@ export function uploadToStorageService(filePath: string): Promise<string> {
                 file: createReadStream(filePath)
             }
         })
-            .then((fileInfo: IFileServiceResponse) => {
+            .then((fileInfoJson: string) => {
+                const fileInfo: IFileServiceResponse = JSON.parse(fileInfoJson);
+                return fileInfo.nvFileName;
+            })
+            .catch((err: any) => {
+                throw err;
+            })
+            .finally(() => {
                 unlink(filePath, (err: any) => {
                     if (err) {
                         logger.error(err);
@@ -22,7 +29,6 @@ export function uploadToStorageService(filePath: string): Promise<string> {
 
                     logger.info('File was cleaned');
                 });
-                return fileInfo.nvFileName;
             });
     }
 

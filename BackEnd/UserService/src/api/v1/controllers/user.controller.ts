@@ -9,6 +9,8 @@ import { upload } from '../../../modules/uploader';
 import * as url from 'url';
 import { createRequest } from '../../../modules/utils';
 import { IFileServiceResponse } from '../../../interfaces/api/IFileServiceResponse';
+import { DEFAULT } from '../../../consts';
+import * as path from 'path';
 
 const config = require('../../../../config');
 
@@ -20,7 +22,8 @@ export class UserController {
     }
 
     public signup(req: ISignupRequest, res: Response, next: NextFunction) {
-        let imagePath: string = 'default.jpg';
+        let imagePath: string = DEFAULT;
+
         if (req.file) {
             imagePath = req.file.path;
         }
@@ -33,15 +36,15 @@ export class UserController {
 
                 uploadToStorageService(imagePath)
                     .then((filePath: string) => {
-                        const fileUrl: string = filePath;
-                        console.log('FILE: ', fileUrl);
+                        const { name } = path.parse(filePath);
+                        console.log('FILE: ', name);
 
                         const user: IUser = {
                             firstName: req.body.firstName,
                             lastName: req.body.lastName,
                             address: req.body.address,
                             email: req.body.email,
-                            imageUrl: `${config.get('services:StorageService')}/api/v1/${fileUrl}/name`,
+                            imageUrl: `${config.get('services:StorageService')}/api/v1/${name}/name`,
                             isAdmin: false,
                             password: req.body.password,
                             phone: req.body.phone
