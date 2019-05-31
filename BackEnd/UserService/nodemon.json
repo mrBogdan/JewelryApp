@@ -1,5 +1,5 @@
 {
-  "exec": "yarn build && NODE_ENV=development node dist/index.js",
+  "exec": "yarn build && NODE_ENV=development yarn start",
   "watch": ["src"],
   "ext": "ts"
 }
