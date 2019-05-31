@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserService } from '../../../services';
+import { uploadToStorageService, UserService } from '../../../services';
 import { ISignupRequest } from '../../../interfaces/api/ISignupRequest';
 import * as fs from 'fs';
 import * as request from 'request';
@@ -8,6 +8,7 @@ import logger from '../../../modules/logger';
 import { upload } from '../../../modules/uploader';
 import * as url from 'url';
 import { createRequest } from '../../../modules/utils';
+import { IFileServiceResponse } from '../../../interfaces/api/IFileServiceResponse';
 
 const config = require('../../../../config');
 
@@ -19,9 +20,10 @@ export class UserController {
     }
 
     public signup(req: ISignupRequest, res: Response, next: NextFunction) {
-        console.log('TMP FILE PATH: ', req.file);
-        const tmpFilePath = req.file.path;
-        const fileReadStream = fs.createReadStream(tmpFilePath);
+        let imagePath: string = 'default.jpg';
+        if (req.file) {
+            imagePath = req.file.path;
+        }
 
         this.userService.isEmailRegistered(req.body.email)
             .then((isRegistered: boolean) => {
@@ -29,29 +31,17 @@ export class UserController {
                     throw new Error('User with this email has been registered!');
                 }
 
-                createRequest(`${config.get('services:StorageService')}/api/v1/upload`, 'POST', {
-                    formData: {
-                        file: fileReadStream
-                    }
-                })
-                    .then((fileInfo: any) => {
-                        fs.unlink(tmpFilePath, (err: any) => {
-                            if (err) {
-                                logger.error(err);
-                                throw err;
-                            }
-
-                            logger.info('File was cleaned');
-                        });
-                        
-                        console.log(fileInfo);
+                uploadToStorageService(imagePath)
+                    .then((filePath: string) => {
+                        const fileUrl: string = filePath;
+                        console.log('FILE: ', fileUrl);
 
                         const user: IUser = {
                             firstName: req.body.firstName,
                             lastName: req.body.lastName,
                             address: req.body.address,
                             email: req.body.email,
-                            imageUrl: `${config.get('services:StorageService')}/api/v1/${fileInfo['nvFileName']}/name`,
+                            imageUrl: `${config.get('services:StorageService')}/api/v1/${fileUrl}/name`,
                             isAdmin: false,
                             password: req.body.password,
                             phone: req.body.phone

@@ -4,7 +4,6 @@ import * as fs from 'fs';
 
 const config = require('../../../config/index');
 
-
 const storage = multer.diskStorage({
     destination: (req: Request, file: Express.Multer.File, callback: any) => {
         const tmpDir = config.get('tmpDir');
