@@ -19,8 +19,8 @@
  *
  */
 
-import { IValidatorProperty } from '../../interfaces/modules/validator/IValidatorProperty';
-import { IRule, IRuleResponse } from './rules';
+import { IRuleFn, IRuleResponse, IValidatorProperty } from '../../interfaces/modules/validator/IValidatorProperty';
+import { IRule } from './rules';
 import { IValidatorResponse } from '../../interfaces/modules/validator/IValidatorResponse';
 
 export function validator(object: IValidatorProperty[]): IValidatorResponse[] {
@@ -29,7 +29,7 @@ export function validator(object: IValidatorProperty[]): IValidatorResponse[] {
     object.forEach((item: IValidatorProperty) => {
         const fieldName: string = item.field.fieldName;
         const value: any = item.field.value;
-        const rules: any[] = item.field.rules;
+        const rules: (IRule | IRuleFn)[] = item.field.rules;
         const oResult: IValidatorResponse = {
             fieldName,
             value,
@@ -44,7 +44,6 @@ export function validator(object: IValidatorProperty[]): IValidatorResponse[] {
             };
 
             if (typeof rule === 'object') {
-                // @ts-ignore
                 checkedRule = rule.check(value, ...rule.params);
 
             } else if (typeof rule === 'function'){
@@ -53,6 +52,7 @@ export function validator(object: IValidatorProperty[]): IValidatorResponse[] {
             }
 
             oResult.hasError = checkedRule.isError;
+
             // @ts-ignore
             checkedRule.isError && oResult.errors.push(checkedRule.msg);
         });

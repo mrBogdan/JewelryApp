@@ -1,16 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { uploadToStorageService, UserService } from '../../../services';
 import { ISignupRequest } from '../../../interfaces/api/ISignupRequest';
-import * as fs from 'fs';
-import * as request from 'request';
 import { IUser } from '../../../interfaces/models/IUser';
-import logger from '../../../modules/logger';
-import { upload } from '../../../modules/uploader';
-import * as url from 'url';
-import { createRequest } from '../../../modules/utils';
-import { IFileServiceResponse } from '../../../interfaces/api/IFileServiceResponse';
 import { DEFAULT } from '../../../consts';
 import * as path from 'path';
+import { validator } from '../../../modules/validator';
+import { IValidatorProperty } from '../../../interfaces/modules/validator/IValidatorProperty';
+import {
+    checkEmail,
+    hasGreatThenOrEqualLength,
+    hasLowerCase,
+    hasUpperCase,
+    onlyLetter
+} from '../../../modules/validator/rules';
 
 const config = require('../../../../config');
 
@@ -27,6 +29,8 @@ export class UserController {
         if (req.file) {
             imagePath = req.file.path;
         }
+
+        this.validateUser(req);
 
         this.userService.isEmailRegistered(req.body.email)
             .then((isRegistered: boolean) => {
@@ -75,6 +79,54 @@ export class UserController {
         } else {
             res.sendStatus(400);
         }
+    }
+
+    private validateUser(req: ISignupRequest) {
+        const validatorParams: IValidatorProperty[] = [
+            {
+                field: {
+                    fieldName: 'email',
+                    value: req.body.email,
+                    rules: [
+                        checkEmail
+                    ],
+                }
+            },
+            {
+                field: {
+                    fieldName: 'firstName',
+                    value: req.body.firstName,
+                    rules: [
+                        onlyLetter
+                    ]
+                }
+            },
+            {
+                field: {
+                    fieldName: 'lastName',
+                    value: req.body.lastName,
+                    rules: [
+                        onlyLetter
+                    ]
+                }
+            },
+            {
+                field: {
+                    fieldName: 'password',
+                    value: req.body.password,
+                    rules: [
+                        {
+                            check: hasGreatThenOrEqualLength,
+                            params: [3, 'password'],
+                        },
+                        hasLowerCase,
+                        hasUpperCase,
+                    ]
+                }
+            }
+        ];
+
+        console.log(validator(validatorParams));
     }
 
 }

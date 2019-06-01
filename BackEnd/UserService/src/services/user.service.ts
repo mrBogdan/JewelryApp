@@ -1,6 +1,8 @@
 import logger from '../modules/logger';
 import * as mssql from 'mssql';
 import { IUser } from '../interfaces/models/IUser';
+import { validator } from '../modules/validator';
+import { IValidatorProperty } from '../interfaces/modules/validator/IValidatorProperty';
 
 export class UserService {
     private readonly db: any;
