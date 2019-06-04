@@ -45,19 +45,20 @@ export function validator(object: IValidatorProperty[]): IValidatorResponse[] {
 
             if (typeof rule === 'object') {
                 checkedRule = rule.check(value, ...rule.params);
-
             } else if (typeof rule === 'function'){
                 // @ts-ignore
                 checkedRule = rule(value);
             }
 
-            oResult.hasError = checkedRule.isError;
+            if (!oResult.hasError) {
+                oResult.hasError = checkedRule.isError;
+            }
 
             // @ts-ignore
             checkedRule.isError && oResult.errors.push(checkedRule.msg);
         });
 
-        result.push(oResult);
+        oResult.hasError && result.push(oResult);
     });
 
     return result;

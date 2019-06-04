@@ -1,8 +1,7 @@
 import logger from '../modules/logger';
 import * as mssql from 'mssql';
 import { IUser } from '../interfaces/models/IUser';
-import { validator } from '../modules/validator';
-import { IValidatorProperty } from '../interfaces/modules/validator/IValidatorProperty';
+import { HttpError } from '../modules/errors/http.error';
 
 export class UserService {
     private readonly db: any;
@@ -57,24 +56,33 @@ export class UserService {
         const count = await pool.request()
             .input('email', mssql.VarChar(255), email)
             .query(`SELECT * FROM JUser WHERE vEmail = @email`);
-        
+
         console.log('COUNT', !!count.recordset.length);
+        if (!!count.recordset.length) {
+            throw new HttpError(409, 'User already exists!');
+        }
         return !!count.recordset.length;
     }
 
 
     public async getUserByEmailAndPassword(email: string, password: string) {
+        const pool = await this.db;
+        let user: any = {};
         try {
-            const pool = await this.db;
-            const getUser = await pool.request()
+           user = await pool.request()
                 .input('email', mssql.VarChar(255), email)
                 .input('password', mssql.VarChar(255), password)
                 .query('SELECT * FROM JUser WHERE vEmail = @email AND vPassword = @password');
 
-            return getUser.recordset;
-
         } catch (err) {
             logger.error(err);
         }
+
+        console.log(user);
+        if (!user.recordset.length) {
+            throw new HttpError(403, 'Unauthorized');
+        }
+
+        return user.recordset.shift();
     }
 }
