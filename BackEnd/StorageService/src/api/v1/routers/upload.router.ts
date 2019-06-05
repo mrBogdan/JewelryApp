@@ -10,6 +10,10 @@ router
     .route('/upload')
     .post(upload.single('file'), uploadController.uploadAndSaveFile.bind(uploadController));
 
+router.
+    route('/:name')
+    .get(uploadController.getFile);
+
 export {
     router
 };
