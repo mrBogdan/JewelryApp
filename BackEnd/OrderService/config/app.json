@@ -1,3 +1,14 @@
 {
-  "port": 9040
+  "port": 9040,
+  "database": {
+    "user": "SA",
+    "password": "12345678Bg",
+    "server": "localhost",
+    "database": "Jewelry",
+    "pool": {
+      "max": 10,
+      "min": 0,
+      "idleTimeoutMillis": 30000
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import * as jwt from 'jsonwebtoken';
 import { uploadToStorageService, UserService } from '../../../services';
 import { ISignupRequest } from '../../../interfaces/api/ISignupRequest';
 import { IUser } from '../../../interfaces/models/IUser';
@@ -53,9 +54,12 @@ export class UserController {
         const email: string = req.body.email;
         const password: string = req.body.password;
 
-        return this.userService.getUserByEmailAndPassword(email, password)
+      const token = jwt.sign({ data: 'foobar' }, 'secret', { expiresIn: '1h' });
+
+      res.send(jwt.verify(token, 'secret'));
+    /*    return this.userService.getUserByEmailAndPassword(email, password)
             .then((token: string) => res.send(token))
-            .catch(next);
+            .catch(next);*/
     }
 
     public logout(req: Request, res: Response) {

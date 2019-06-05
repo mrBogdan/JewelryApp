@@ -11,8 +11,8 @@ const app = express();
 const PORT = config.get('port');
 
 app
-    .use(bodyParser.urlencoded({ extended: false }))
-    .use(bodyParser.json())
+    .use(bodyParser.urlencoded({ extended: false, limit: '10mb' }))
+    .use(bodyParser.json({ limit: '10mb' }))
     .use(morgan(':method :url :status :response-time ms'))
     .use('/api/v1/', api)
     .listen(PORT, () => {

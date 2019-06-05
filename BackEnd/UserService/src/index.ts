@@ -3,7 +3,7 @@ import logger from './modules/logger'
 import * as session from 'express-session'
 import api from './api/v1';
 import * as bodyParser from 'body-parser';
-import errorHttpHadler from './modules/handlers/errorHttpHadler';
+import errorHttpHandler from './modules/handlers/errorHttpHandler';
 
 const MSSQLStore = require('connect-mssql')(session);
 const morgan = require('morgan');
@@ -14,8 +14,8 @@ const app = express();
 const PORT = config.get('port');
 
 app
-    .use(bodyParser.urlencoded({ extended: false }))
-    .use(bodyParser.json())
+    .use(bodyParser.urlencoded({ extended: false, limit: '10mb' }))
+    .use(bodyParser.json({ limit: '10mb' }))
     .use(session({
         store: new MSSQLStore(config.get('database')),
         secret: config.get('session:secret'),
@@ -25,7 +25,7 @@ app
     }))
     .use(morgan(':method :url :status :response-time ms'))
     .use('/api/v1/', api)
-    .use(errorHttpHadler)
+    .use(errorHttpHandler)
     .listen(PORT, () => {
         logger.info(`Server is running on ${PORT}`);
     });
