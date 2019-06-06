@@ -14,4 +14,12 @@ router
         }
     }));
 
+router
+    .route('/:id')
+    .get(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
+    }));
+
 export default router;

@@ -1,20 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import db from '../../../modules/db';
+import { ProductService } from '../../../services/product.service';
+
+const productService = new ProductService();
 
 export class ProductController {
-    public async get(req: Request, res: Response, next: NextFunction) {
-        try {
-            const pool = await db;
-            const result: any = await pool.request()
-                .query('SELECT * FROM JProduct');
+    public get(req: Request, res: Response, next: NextFunction) {
+        productService.getAll()
+            .then((products: any) => res.send(products))
+            .catch(next);
+    }
 
-            res.send({
-                count: result.recordsets[0].length,
-                data: result.recordsets[0]
-            });
-        } catch (e) {
-            next(e);
-        }
-
+    public getById(req: Request, res: Response, next: NextFunction) {
+        productService.getById(req.params.id)
     }
 }

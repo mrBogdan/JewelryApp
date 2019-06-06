@@ -13,10 +13,13 @@ const state = {
 };
 
 const getters = {
-    products: (state, getters) => {
-        return state.items;
+    products: state => state.items,
+    getProductById: state => id => {
+        return state.items.find(item => item.idProduct === id);
     }
 };
+
+
 
 const actions = {
     async [ProductsActions.SET_ALL_PRODUCTS]({ commit }) {

@@ -9,7 +9,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 new Vue({
+  render: function (h) { return h(App) },
   router,
   store,
-  render: function (h) { return h(App) }
 }).$mount('#app');

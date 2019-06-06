@@ -9,7 +9,6 @@
 <script>
     import product from '../components/ProductListItem';
     import productList from '../components/ProductList';
-    import products from '../mockData';
     import { mapGetters } from 'vuex';
 
     export default {
