@@ -119,21 +119,19 @@ export class UserController {
         return validator(validatorParams);
     }
 
-    private getUserFromReq(req: ISignupRequest, filePath: string) {
+    private getUserFromReq(req: ISignupRequest, filePath: string): IUser {
         const { name } = path.parse(filePath);
 
-        const user: IUser = {
+      return {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             address: req.body.address,
             email: req.body.email,
-            imageUrl: `${config.get('services:StorageService')}/api/v1/${name}/name`,
+            imageUrl: `${config.get('services:StorageService')}/api/v1/${name}`,
             isAdmin: false,
             password: req.body.password,
             phone: req.body.phone
         };
-
-        return user;
     }
 
 }
