@@ -3,5 +3,6 @@
   "services": {
     "JewelryContentService": "http://localhost:9020",
     "UserService": "http://localhost:9030"
-  }
+  },
+  "secret": "SOME_SECRET_KEY"
 }
