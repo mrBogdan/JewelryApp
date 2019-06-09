@@ -1,12 +1,10 @@
 <template>
-    <div>
-
-    </div>
+    <div>111</div>
 </template>
 
 <script>
     export default {
-        name: 'PopupItem'
+        name: 'PopupWrapper'
     };
 </script>
 

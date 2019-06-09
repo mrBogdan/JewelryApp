@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import * as jwt from 'jsonwebtoken';
 import { uploadToStorageService, UserService } from '../../../services';
 import { ISignupRequest } from '../../../interfaces/api/ISignupRequest';
 import { IUser } from '../../../interfaces/models/IUser';
@@ -14,7 +13,6 @@ import {
     hasUpperCase,
     onlyLetter
 } from '../../../modules/validator/rules';
-import { HttpError } from '../../../modules/errors/http.error';
 
 const config = require('../../../../config');
 
@@ -39,13 +37,12 @@ export class UserController {
         }
 
         this.userService.isEmailRegistered(req.body.email)
-            .then(() => uploadToStorageService(imagePath)
-                .then((filePath: string) =>
-                    this.userService.create(this.getUserFromReq(req, filePath))
-                        .then((user: any) => {
-                            res.send(user);
-                        })
-                ))
+            .then(() => uploadToStorageService(imagePath))
+            .then((filePath: string) =>
+                this.userService.create(this.getUserFromReq(req, filePath)))
+            .then((user: any) => {
+                res.send(user);
+            })
             .catch(next);
 
     }
@@ -54,21 +51,41 @@ export class UserController {
         const email: string = req.body.email;
         const password: string = req.body.password;
 
-      const token = jwt.sign({ data: 'foobar' }, 'secret', { expiresIn: '1h' });
+        const validatedEmail = this.validateEmail(email);
 
-      res.send(jwt.verify(token, 'secret'));
-    /*    return this.userService.getUserByEmailAndPassword(email, password)
-            .then((token: string) => res.send(token))
-            .catch(next);*/
+        if (validatedEmail.length) {
+            res.sendStatus(400).send(validatedEmail);
+            return;
+        }
+
+        return this.userService.userLogin(email, password)
+            .then((token: any) => res.send(token))
+            .catch(next);
     }
 
-    public logout(req: Request, res: Response) {
-        if (req.session.user) {
-            delete req.session.user;
-            res.sendStatus(200);
-        } else {
-            throw new HttpError(400, 'Bad logout');
-        }
+    public logout(req: Request, res: Response, next: NextFunction) {
+        console.log('DECODED: ', req['decoded']);
+        res.sendStatus(200);
+    }
+
+    public refreshToken(req: Request, res: Response, next: NextFunction) {
+
+    }
+
+    private validateEmail(email: string) {
+        const validateParams: IValidatorProperty[] = [
+            {
+                field: {
+                    fieldName: 'email',
+                    value: email,
+                    rules: [
+                        checkEmail
+                    ]
+                }
+            }
+        ];
+
+        return validator(validateParams);
     }
 
     private validateUser(req: ISignupRequest) {
@@ -122,7 +139,7 @@ export class UserController {
     private getUserFromReq(req: ISignupRequest, filePath: string): IUser {
         const { name } = path.parse(filePath);
 
-      return {
+        return {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             address: req.body.address,

@@ -10,7 +10,7 @@
 
 <script>
     import Tooltip from './BaseTooltip'
-    import Popup from '../components/Popup/Popup'
+    import Popup from './Popup'
 
     export default {
         name: 'Icon',

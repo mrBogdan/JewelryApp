@@ -16,6 +16,7 @@
                 <icon :icon="faQuestionCircle" :tooltip-text="'Help'" />
                 <icon :icon="faShoppingCart" :tooltip-text="'Your Cart'"/>
                 <icon :has-popup="true" :icon="faSignInAlt"  :tooltip-text="'Sign in'" />
+                <icon :has-popup="true" :icon="faTh"  :tooltip-text="'More'" />
             </div>
         </div>
     </header>
@@ -26,6 +27,7 @@
     import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
     import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
     import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+    import { faTh } from '@fortawesome/free-solid-svg-icons'
     import Icon from './BaseIcon'
 
     export default {
@@ -39,6 +41,7 @@
                 faShoppingCart,
                 faSignInAlt,
                 faQuestionCircle,
+                faTh,
                 state: 'close'
             }
         },

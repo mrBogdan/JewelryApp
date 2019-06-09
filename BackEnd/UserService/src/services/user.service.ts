@@ -2,6 +2,11 @@ import logger from '../modules/logger';
 import * as mssql from 'mssql';
 import { IUser } from '../interfaces/models/IUser';
 import { HttpError } from '../modules/errors/http.error';
+import * as uuid from 'uuid/v4';
+import { compare, hash } from '../modules/handlers/hashPromiseHandler';
+import { sign } from '../modules/handlers/jwtHandler';
+
+const config = require('../../config');
 
 export class UserService {
     private readonly db: any;
@@ -24,22 +29,24 @@ export class UserService {
     }
 
     public async create(user: IUser) {
-        try {
-            const pool = await this.db;
-            if (await this.isEmailRegistered(user.email)) {
-                throw new Error('User with this email has been registered!');
-            }
 
+            const pool = await this.db;
+            await this.isEmailRegistered(user.email);
+
+            const refresh_token = uuid();
+            const password = await hash(user.password);
+        try {
             await pool.request()
                 .input('firstName', mssql.VarChar(255), user.firstName)
                 .input('lastName', mssql.VarChar(255), user.lastName)
                 .input('email', mssql.VarChar(255), user.email)
-                .input('password', mssql.VarChar(255), user.password)
+                .input('password', mssql.VarChar(255), password)
                 .input('isAdmin', mssql.Bit, +user.isAdmin)
                 .input('imageUrl', mssql.VarChar(255), user.imageUrl)
                 .input('address', mssql.VarChar(255), user.address)
                 .input('phone', mssql.VarChar(255), user.phone)
-                .query('INSERT INTO JUser VALUES (@firstName, @lastName, @email, @password, @isAdmin, @imageUrl, @address, @phone)');
+                .input('refresh_token', mssql.UniqueIdentifier, refresh_token)
+                .query('INSERT INTO JUser VALUES (@firstName, @lastName, @email, @password, @isAdmin, @imageUrl, @address, @phone, @refresh_token)');
 
             return pool.request().query('SELECT * FROM JUser WHERE idUser = @@identity')
                 .then((user: any) => {
@@ -65,24 +72,51 @@ export class UserService {
     }
 
 
-    public async getUserByEmailAndPassword(email: string, password: string) {
+    public async userLogin(email: string, password: string) {
         const pool = await this.db;
         let user: any = {};
         try {
            user = await pool.request()
                 .input('email', mssql.VarChar(255), email)
-                .input('password', mssql.VarChar(255), password)
-                .query('SELECT * FROM JUser WHERE vEmail = @email AND vPassword = @password');
+                .query('SELECT * FROM JUser WHERE vEmail = @email');
 
         } catch (err) {
             logger.error(err);
+            throw new HttpError(500, 'Server error');
         }
 
-        console.log(user);
-        if (!user.recordset.length) {
-            throw new HttpError(403, 'Unauthorized');
+        const match = await compare(password, user.recordset[0].vPassword);
+
+        console.log('USER: ', user);
+        console.log('Match: ', match);
+        if (!user.recordset.length || !match) {
+            throw new HttpError(401, 'Password or email are incorrect');
         }
 
-        return user.recordset.shift();
+        const payload = {
+            idUser: user.recordset[0].idUser,
+            isAdmin: user.recordset[0].bIsAdmin,
+            iat: Math.floor(Date.now() / 1000) - 30
+        };
+
+        const secretKey = config.get('secret');
+        const options = { expiresIn: '1h' };
+
+        const token = await sign(payload, secretKey, options);
+        const refreshToken = user.recordset[0].refreshToken;
+
+        return {
+            access_token: token,
+            refresh_token: refreshToken,
+        };
+    }
+
+    async refreshToken(userId: number, refreshToken: string) {
+        const pool = await this.db;
+        const user = await pool.request()
+            .input('id', mssql.Int, userId)
+            .query('SELECT * FROM JUser WHERE id = @id');
+
+
     }
 }

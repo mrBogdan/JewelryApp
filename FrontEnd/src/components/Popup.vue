@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div v-if="toOpen" class="popup-wrapper">
+        <div v-if="isOpen" class="popup-wrapper">
             Pop up
         </div>
     </transition>
@@ -9,10 +9,6 @@
 <script>
     export default {
         name: 'Popup',
-        props: [
-            'toOpen',
-            'popUpItems'
-        ],
         data: function () {
             return {
                 isOpen: false
@@ -22,7 +18,7 @@
 </script>
 
 <style scoped lang="sass">
-    @import "../../styles/colors"
+    @import "../styles/colors"
 
     .popup-wrapper
         position: absolute
