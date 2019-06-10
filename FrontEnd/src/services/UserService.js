@@ -1,11 +1,25 @@
 import { BaseService } from './BaseService';
+import axios from 'axios';
+import { UserService } from '../settings/services';
 
-export class UserService extends BaseService{
-  login() {}
+export class UserService extends BaseService {
+    constructor() {
+        super();
+        this.$http = axios.create({
+            baseURL: UserService
+        });
+    }
 
-  logout() {}
+    async login(email, password) {
 
-  refreshToken() {}
+    }
 
-  registration() {}
+    logout() {
+    }
+
+    refreshToken() {
+    }
+
+    registration() {
+    }
 }

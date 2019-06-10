@@ -10,7 +10,6 @@
     import product from '../components/ProductListItem';
     import productList from '../components/ProductList';
     import { mapGetters } from 'vuex';
-    import { ProductsActions } from '../store/modules/products';
     import Pagination from '../components/Pagination';
 
     export default {
@@ -25,12 +24,9 @@
             productList,
             product,
         },
-        created() {
-            this.$store.dispatch( ProductsActions.SET_ALL_PRODUCTS);
-        },
         computed: {
             categoryName: function () {
-                return 'Product list';
+                return 'Search page';
             },
             ...mapGetters([
                 'products'

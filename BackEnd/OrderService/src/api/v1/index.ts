@@ -1,8 +1,8 @@
 import * as express from 'express';
-import router from './routers';
+import router from './routers/order.router';
 
 const app = express();
 
-app.use(router);
+app.use('/order', router);
 
 export default app;

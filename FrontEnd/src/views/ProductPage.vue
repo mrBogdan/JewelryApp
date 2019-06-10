@@ -61,7 +61,6 @@
         },
         methods: {
             addToCart() {
-                console.log('DISPACHED', this.product);
                 this.$store.dispatch(CartActions.SET_CART_PRODUCT, this.product);
             }
         }

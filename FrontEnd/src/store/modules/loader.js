@@ -3,7 +3,7 @@ export const LoaderMutations = {
     STOP_LOADING: 'STOP_LOADING'
 };
 
-export const ProductsActions = {};
+export const LoaderActions = {};
 
 const state = {
     isLoading: false,

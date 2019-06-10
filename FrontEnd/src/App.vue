@@ -51,7 +51,6 @@
       this.$store.commit(LoaderMutations.START_LOADING);
       this.$store.dispatch(CartActions.SET_CART_PRODUCTS, orderService.getProducts());
       this.$store.dispatch( CategoriesActions.SET_ALL_CATEGORIES );
-      this.$store.dispatch( ProductsActions.SET_ALL_PRODUCTS );
     },
     mounted() {
       this.$store.commit(LoaderMutations.STOP_LOADING);

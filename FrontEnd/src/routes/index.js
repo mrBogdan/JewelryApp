@@ -6,6 +6,8 @@ import Categories from '../views/Categories';
 import CategoryPage from '../views/CategoryPage';
 import SignUpPage from '../views/SignUpPage';
 import CartPage from '../views/CartPage';
+import SearchPage from '../views/SearchPage';
+import Checkout from '../views/Checkout';
 
 export default [
     {
@@ -17,6 +19,11 @@ export default [
         path: '/about',
         name: 'about',
         component: About
+    },
+    {
+        path: '/checkout',
+        name: 'checkout',
+        component: Checkout
     },
     {
         path: '/product/:id',
@@ -42,8 +49,18 @@ export default [
         component: CartPage
     },
     {
-        path: '/authorization',
-        name: 'authorization',
+        path: '/page/:number',
+        name: 'page',
+        component: Home,
+    },
+    {
+        path: '/search',
+        name: 'search',
+        component: SearchPage,
+    },
+    {
+        path: '/login',
+        name: 'login',
         component: SignUpPage
 
     },

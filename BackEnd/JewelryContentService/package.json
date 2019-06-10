@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mssql": "^5.1.0",
     "nconf": "^0.10.0",
+    "sqlstring": "^2.3.1",
     "winston": "^3.2.1"
   }
 }

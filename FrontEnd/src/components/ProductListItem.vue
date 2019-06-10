@@ -39,7 +39,6 @@
         ],
         methods: {
             addToCart() {
-                console.log('PRODUCT ITEM: ', this.productItem);
                 this.$store.dispatch(CartActions.SET_CART_PRODUCT, this.productItem);
             }
         }

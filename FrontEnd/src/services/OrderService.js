@@ -1,18 +1,25 @@
 import { BaseService } from './BaseService';
+import axios from 'axios'
+import { OrderService } from '../settings/services'
 
 const CART = 'CART';
 
 export class OrderService extends BaseService {
+    constructor() {
+        super();
+        this.$http = axios.create({
+            baseURL: OrderService
+        })
+    }
     addToCart(id) {
         const cart = localStorage.getItem(CART);
         let products = null;
-        console.log('11111');
 
         if (cart) {
             products = JSON.parse(cart);
             products.count += 1;
-            
-            const existsProduct = products.products.find( item => item.idProduct === id);
+
+            const existsProduct = products.products.find(item => item.idProduct === id);
 
             if (existsProduct) {
                 existsProduct.count += 1;
@@ -66,14 +73,32 @@ export class OrderService extends BaseService {
     }
 
     clearCart() {
-        localStorage.setItem(CART, "");
+        localStorage.setItem(CART, '');
     }
 
-    makeOrder() {
+    makeOrder(products, user) {
 
     }
 
     removeFromCart(id) {
+        const cart = localStorage.getItem(CART);
 
+        if (!cart) return;
+
+        const { count, products } = JSON.parse(cart);
+
+        let tmpCount = count;
+
+        products.forEach((item, idx) => {
+            if (+item.idProduct === +id) {
+                tmpCount = count - item.count;
+                products.splice(idx, 1);
+            }
+        });
+
+        localStorage.setItem(CART, JSON.stringify({
+            count: tmpCount,
+            products,
+        }));
     }
 }

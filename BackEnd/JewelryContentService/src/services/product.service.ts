@@ -4,14 +4,25 @@ import { HttpError } from '../modules/errors/http.error';
 import logger from '../modules/logger';
 
 export class ProductService {
-    public async getAll() {
+    public async getAll(top: any = 8, offset: any = 0) {
         try {
+            const topValue: number = parseInt(top);
+            const offsetValue = parseInt(offset);
+
             const pool = await db;
             const result: any = await pool.request()
-                .query('SELECT * FROM JProduct');
+                .query(`SELECT * 
+                FROM JProduct 
+                WHERE isActive = 1
+                ORDER BY idProduct ASC
+                OFFSET ${offsetValue} ROWS
+                FETCH NEXT ${topValue} ROWS ONLY`);
 
+            const count = await pool.request()
+                .query('SELECT COUNT(*) FROM JProduct WHERE isActive = 1');
+            
             return {
-                count: result.recordsets[0].length,
+                count: count.recordset[0][''],
                 data: result.recordsets[0]
             };
         } catch (e) {

@@ -77,4 +77,13 @@
         &:hover
             background-color: $icon-hover-grey
             color: $dark-blue-grey
+
+    .no-hover
+        .icon
+            &:hover
+                background-color: transparent
+
+    .no-riple
+        .icon
+
 </style>

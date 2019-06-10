@@ -9,18 +9,23 @@
                     <div>
                         <icon :icon="faSearch" :on-click="search" class="search-icon"/>
                     </div>
-                    <input type="text" autocomplete="off" class="search-field" name="search" placeholder="Search ... ">
+                    <input type="text" autocomplete="off" v-model="inputValue" class="search-field" name="search"
+                           placeholder="Search ... ">
                 </div>
             </div>
             <div class="actions">
-                <icon :icon="faQuestionCircle" :tooltip-text="'Help'"/>
+                <router-link :to="{ name: 'about' }">
+                    <icon :icon="faQuestionCircle" :tooltip-text="'About'"/>
+                </router-link>
                 <router-link to="/cart">
                     <div class="cart">
                         <icon :icon="faShoppingCart" :tooltip-text="'Your Cart'"/>
-                        <span class="cart-counter">{{ $store.getters.cartCount }}</span>
+                        <span v-if="$store.getters.cartCount" class="cart-counter">{{ $store.getters.cartCount }}</span>
                     </div>
                 </router-link>
-                <icon :has-popup="true" :icon="faSignInAlt" :tooltip-text="'Sign in'"/>
+                <router-link to="/login">
+                    <icon :has-popup="true" :icon="faSignInAlt" :tooltip-text="'Sign in'"/>
+                </router-link>
                 <icon :has-popup="true" :icon="faTh" :tooltip-text="'More'"/>
             </div>
         </div>
@@ -34,6 +39,8 @@
     import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
     import { faTh } from '@fortawesome/free-solid-svg-icons';
     import Icon from './BaseIcon';
+    import { SearchService } from '../services';
+    import { ProductsMutations } from '../store/modules/products';
 
     export default {
         name: 'Header',
@@ -47,7 +54,8 @@
                 faSignInAlt,
                 faQuestionCircle,
                 faTh,
-                state: 'close'
+                state: 'close',
+                inputValue: '',
             };
         },
         computed: {
@@ -57,7 +65,13 @@
         },
         methods: {
             search() {
-                console.log('SEARCH');
+                const ss = new SearchService();
+                console.log('search', this.inputValue);
+                ss.search(this.inputValue)
+                    .then((products) => {
+                        return this.$store.commit(ProductsMutations.SET_PRODUCTS, products.data.data);
+                    })
+                    .then(() => this.$router.push('/search'));
             }
         }
     };
