@@ -9,8 +9,32 @@ const contentServiceUrl = config.get('services:JewelryContentService');
 router
     .route('/all')
     .get(expressHttpProxy(contentServiceUrl, {
-        proxyReqPathResolver: () => {
-            return `/api/v1/product/all`;
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
+    }));
+
+router
+    .route('/by-category/:idCategory')
+    .get(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
+    }));
+
+router
+    .route('/:id')
+    .get(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
+    }));
+
+router
+    .route('/by-ids')
+    .post(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
         }
     }));
 

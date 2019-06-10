@@ -18,7 +18,7 @@
 </script>
 
 <style scoped lang="sass">
-    @import "../styles/colors"
+    @import "../../styles/colors"
 
     .popup-wrapper
         position: absolute

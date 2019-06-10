@@ -22,6 +22,9 @@
             productList,
             product,
         },
+        created() {
+            
+        },
         computed: {
             categoryName: function () {
                 return 'Product list';

@@ -5,33 +5,38 @@
                 <router-link to="/"><span class="logo-text">J</span></router-link>
             </div>
             <div>
-                <div class="search" >
+                <div class="search">
                     <div>
-                        <icon :icon="faSearch" :on-click="search" class="search-icon" />
+                        <icon :icon="faSearch" :on-click="search" class="search-icon"/>
                     </div>
                     <input type="text" autocomplete="off" class="search-field" name="search" placeholder="Search ... ">
                 </div>
             </div>
             <div class="actions">
-                <icon :icon="faQuestionCircle" :tooltip-text="'Help'" />
-                <icon :icon="faShoppingCart" :tooltip-text="'Your Cart'"/>
-                <icon :has-popup="true" :icon="faSignInAlt"  :tooltip-text="'Sign in'" />
-                <icon :has-popup="true" :icon="faTh"  :tooltip-text="'More'" />
+                <icon :icon="faQuestionCircle" :tooltip-text="'Help'"/>
+                <router-link to="/cart">
+                    <div class="cart">
+                        <icon :icon="faShoppingCart" :tooltip-text="'Your Cart'"/>
+                        <span class="cart-counter">{{ $store.getters.cartCount }}</span>
+                    </div>
+                </router-link>
+                <icon :has-popup="true" :icon="faSignInAlt" :tooltip-text="'Sign in'"/>
+                <icon :has-popup="true" :icon="faTh" :tooltip-text="'More'"/>
             </div>
         </div>
     </header>
 </template>
 
 <script>
-    import { faSearch } from '@fortawesome/free-solid-svg-icons'
-    import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-    import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
-    import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-    import { faTh } from '@fortawesome/free-solid-svg-icons'
-    import Icon from './BaseIcon'
+    import { faSearch } from '@fortawesome/free-solid-svg-icons';
+    import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+    import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+    import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+    import { faTh } from '@fortawesome/free-solid-svg-icons';
+    import Icon from './BaseIcon';
 
     export default {
-        name: "Header",
+        name: 'Header',
         components: {
             Icon
         },
@@ -43,6 +48,11 @@
                 faQuestionCircle,
                 faTh,
                 state: 'close'
+            };
+        },
+        computed: {
+            productCount: function () {
+                return this.$store.getters();
             }
         },
         methods: {
@@ -50,12 +60,12 @@
                 console.log('SEARCH');
             }
         }
-    }
+    };
 
     let prevScrollPos = window.pageYOffset;
 
-    window.onscroll = function() {
-        const headerElem = document.querySelector("header.header");
+    window.onscroll = function () {
+        const headerElem = document.querySelector('header.header');
         let currentScrollPos = window.pageYOffset;
 
         if (prevScrollPos > currentScrollPos) {
@@ -65,7 +75,7 @@
         }
 
         prevScrollPos = currentScrollPos;
-    }
+    };
 </script>
 
 <style scoped lang="sass">
@@ -106,6 +116,7 @@
         width: 30px
         height: 30px
         transition: all .5s
+
         &:hover
             color: $white
             background-color: $black
@@ -145,4 +156,20 @@
         display: flex
         justify-content: center
         align-items: center
+
+    .cart
+        position: relative
+
+        .cart-counter
+            position: absolute
+            bottom: 0
+            right: 0
+            background-color: rgba($dark-blue-grey, 1)
+            border-radius: 50%
+            width: 20px
+            height: 20px
+            display: flex
+            justify-content: center
+            align-items: center
+            color: $white
 </style>

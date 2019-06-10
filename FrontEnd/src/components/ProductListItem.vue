@@ -1,44 +1,46 @@
 <template>
-    <div v-if="productItem.isActive" class="product" >
+    <div v-if="productItem.isActive" class="product">
         <div class="add-to-cart" @click="addToCart(productItem.idProduct)">
-            <icon :icon="faCartPlus" :tooltip-text="'Add to cart'" />
+            <icon :icon="faCartPlus" :tooltip-text="'Add to cart'"/>
         </div>
         <router-link :to="{ name: 'product', params: { id: productItem.idProduct } }">
             <img :src="productItem.imagePath" class="product__image">
 
-        <div class="product-value">
-            <div class="product__name" :title="productItem.productName">
-                <span class="with-underline--hover">{{ productItem.productName }}</span>
+            <div class="product-value">
+                <div class="product__name" :title="productItem.productName">
+                    <span class="with-underline--hover">{{ productItem.productName }}</span>
+                </div>
+                <div class="price">
+                    <span class="price__amount">{{ productItem.price }} </span>
+                    <span class="price__currency">{{ productItem.currency }}</span>
+                </div>
             </div>
-            <div class="price">
-                <span class="price__amount">{{ productItem.price }} </span>
-                <span class="price__currency">{{ productItem.currency }}</span>
-            </div>
-        </div>
         </router-link>
     </div>
 </template>
 
 <script>
-    import Icon from './BaseIcon'
-    import { faCartPlus } from '@fortawesome/free-solid-svg-icons'
+    import Icon from './BaseIcon';
+    import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+    import { CartActions } from '../store/modules/cart';
 
     export default {
         name: 'Product',
         components: {
             Icon,
         },
-        data: function() {
+        data: function () {
             return {
                 faCartPlus
-            }
+            };
         },
         props: [
             'productItem',
         ],
         methods: {
-            addToCart(id) {
-                console.log(id);
+            addToCart() {
+                console.log('PRODUCT ITEM: ', this.productItem);
+                this.$store.dispatch(CartActions.SET_CART_PRODUCT, this.productItem);
             }
         }
     };

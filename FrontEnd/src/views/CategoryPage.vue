@@ -9,74 +9,46 @@
 <script>
     import product from '../components/ProductListItem';
     import productList from '../components/ProductList';
-
-    const mockProducts = [
-        {
-            id: 1,
-            name: 'So cool name for item',
-            imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-            alt: 'Alt of image',
-            price: 20.22,
-            currency: '$'
-        },
-        {
-            id: 2,
-            name: 'So cool name for item',
-            imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-            alt: 'Alt of image',
-            price: 20.22,
-            currency: '$'
-        },
-        {
-            id: 3,
-            name: 'So cool name for item',
-            imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-            alt: 'Alt of image',
-            price: 20.22,
-            currency: '$'
-        },
-        {
-            id: 4,
-            name: 'So cool name for item',
-            imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-            alt: 'Alt of image',
-            price: 20.22,
-            currency: '$'
-        },
-        {
-            id: 5,
-            name: 'So cool name for item',
-            imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-            alt: 'Alt of image',
-            price: 20.22,
-            currency: '$'
-        },
-        {
-            id: 6,
-            name: 'So cool name for item',
-            imagePath: 'https://images-na.ssl-images-amazon.com/images/I/71bjkdV3-RL._UY395_.jpg',
-            alt: 'Alt of image',
-            price: 20.22,
-            currency: '$'
-        }
-    ];
-
+    import { ProductsActions } from '../store/modules/products';
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'CategoryPage',
-        data: function() {
+        data: function () {
             return {
-                categoryName: `Category page ${this.$route.params.id}`,
-                products: mockProducts,
-            }
+                categoryName: '',
+            };
         },
         components: {
             productList,
             product,
+        },
+        computed: {
+            ...mapGetters({
+                products: 'products',
+            })
+        },
+        created() {
+            console.log('Category page created');
+            this.fetchProducts();
+        },
+        methods: {
+            fetchProducts() {
+                this.$store.dispatch(ProductsActions.SET_BY_CATEGORY, this.$route.params.id)
+                    .then(() => {
+                        const categoryId = +this.$route.params.id;
+                        this.categoryName =
+                            this.$store.getters.categories.find( item => item.idCategory === categoryId).categoryName;
+                    });
+            }
+        },
+        watch: {
+            '$route': 'fetchProducts'
         }
     };
 </script>
 
-<style scoped>
-
+<style scoped lang="sass">
+    .categories
+        position: relative
 </style>

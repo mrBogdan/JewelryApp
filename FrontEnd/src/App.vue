@@ -8,6 +8,7 @@
       </div>
       <Footer></Footer>
     </div>
+    <loader :is-loading="$store.getters.isLoading"/>
   </div>
 </template>
 
@@ -18,27 +19,15 @@
   import { CategoriesActions } from './store/modules/categories';
   import { mapGetters } from 'vuex';
   import { ProductsActions } from './store/modules/products';
-
-/*
-  const mockCategories = [
-    {
-      id: 1,
-      name: 'CategoryItem 1',
-    },
-    {
-      id: 2,
-      name: 'CategoryItem 2',
-    },
-    {
-      id: 3,
-      name: 'CategoryItem 3',
-    }
-  ];
-*/
+  import { LoaderMutations } from './store/modules/loader';
+  import { CartActions, CartMutations } from './store/modules/cart';
+  import Loader from './components/Loader';
+  import { OrderService } from './services';
 
   export default {
     name: 'App',
     components: {
+      Loader,
       Header,
       Footer,
       Sidebar,
@@ -57,8 +46,15 @@
       ])
     },
     created() {
+      const orderService = new OrderService();
+
+      this.$store.commit(LoaderMutations.START_LOADING);
+      this.$store.dispatch(CartActions.SET_CART_PRODUCTS, orderService.getProducts());
       this.$store.dispatch( CategoriesActions.SET_ALL_CATEGORIES );
       this.$store.dispatch( ProductsActions.SET_ALL_PRODUCTS );
+    },
+    mounted() {
+      this.$store.commit(LoaderMutations.STOP_LOADING);
     }
   }
 </script>

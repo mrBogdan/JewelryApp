@@ -5,6 +5,7 @@ import ProductPage from '../views/ProductPage';
 import Categories from '../views/Categories';
 import CategoryPage from '../views/CategoryPage';
 import SignUpPage from '../views/SignUpPage';
+import CartPage from '../views/CartPage';
 
 export default [
     {
@@ -27,21 +28,28 @@ export default [
         name: 'categories',
         component: Categories,
         children: [
-            {
-                path: ':id',
-                name: 'category',
-                component: CategoryPage
-            }
+
         ]
     },
     {
-        path: '*',
-        component: NotFound
+        path: '/categories/:id',
+        name: 'category',
+        component: CategoryPage
+    },
+    {
+        path: '/cart',
+        name: 'cart',
+        component: CartPage
     },
     {
         path: '/authorization',
         name: 'authorization',
         component: SignUpPage
 
-    }
+    },
+    {
+        path: '*',
+        name: 'notFound',
+        component: NotFound
+    },
 ];
