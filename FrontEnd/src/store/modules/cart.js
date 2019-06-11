@@ -7,7 +7,8 @@ export const CartMutations = {
     SET_CART_PRODUCT: 'SET_CART_PRODUCT',
     SET_CART_PRODUCTS: 'SET_CART_PRODUCTS',
     SET_CART_COUNT: 'SET_CART_COUNT',
-    REMOVE_PRODUCT_FROM_CART_BY_ID: 'REMOVE_PRODUCT_FROM_CART_BY_ID'
+    REMOVE_PRODUCT_FROM_CART_BY_ID: 'REMOVE_PRODUCT_FROM_CART_BY_ID',
+    CLEAR_CART: 'CLEAR_CART',
 };
 
 export const CartActions = {
@@ -104,6 +105,12 @@ const mutations = {
 
 
         state.count = tmpCount;
+    },
+    [CartMutations.CLEAR_CART](state) {
+        state.items.splice(0,state.items.length - 1);
+        state.count = 0;
+
+        orderService.clearCart();
     }
 };
 

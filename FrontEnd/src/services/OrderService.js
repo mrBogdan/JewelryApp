@@ -1,16 +1,16 @@
 import { BaseService } from './BaseService';
-import axios from 'axios'
-import { OrderService } from '../settings/services'
 
 const CART = 'CART';
 
 export class OrderService extends BaseService {
-    constructor() {
-        super();
-        this.$http = axios.create({
-            baseURL: OrderService
-        })
+    getOrders() {
+        return this.$http.get('/api/v1/order');
     }
+
+    removeOrder(id) {
+        return this.$http.delete(`/api/v1/order/${id}`);
+    }
+
     addToCart(id) {
         const cart = localStorage.getItem(CART);
         let products = null;
@@ -76,8 +76,14 @@ export class OrderService extends BaseService {
         localStorage.setItem(CART, '');
     }
 
-    makeOrder(products, user) {
+    makeOrder(user, price) {
+        const cart = localStorage.getItem(CART);
 
+        return this.$http.post('/api/v1/order', {
+            user,
+            price,
+            products: cart
+        })
     }
 
     removeFromCart(id) {

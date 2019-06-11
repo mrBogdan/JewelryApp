@@ -21,20 +21,21 @@ export class UserService {
             .input('id', mssql.Int, id)
             .query('SELECT * FROM JUser WHERE idUser = @id');
 
-        if (user.recordset.length !== 0) {
-            return Promise.resolve(user.recordset);
+        if (user.recordset.length) {
+            return user.recordset[0];
         } else {
-
+            throw new HttpError(404, 'User not found');
         }
+
     }
 
     public async create(user: IUser) {
 
-            const pool = await this.db;
-            await this.isEmailRegistered(user.email);
+        const pool = await this.db;
+        await this.isEmailRegistered(user.email);
 
-            const refresh_token = uuid();
-            const password = await hash(user.password);
+        const refresh_token = uuid();
+        const password = await hash(user.password);
         try {
             await pool.request()
                 .input('firstName', mssql.VarChar(255), user.firstName)
@@ -76,7 +77,7 @@ export class UserService {
         const pool = await this.db;
         let user: any = {};
         try {
-           user = await pool.request()
+            user = await pool.request()
                 .input('email', mssql.VarChar(255), email)
                 .query('SELECT * FROM JUser WHERE vEmail = @email');
 
@@ -85,22 +86,24 @@ export class UserService {
             throw new HttpError(500, 'Server error');
         }
 
+        if (!user.recordset.length) {
+            throw new HttpError(403, 'Password or email are incorrect');
+        }
         const match = await compare(password, user.recordset[0].vPassword);
 
         console.log('USER: ', user);
         console.log('Match: ', match);
-        if (!user.recordset.length || !match) {
+        if (!match) {
             throw new HttpError(401, 'Password or email are incorrect');
         }
 
         const payload = {
             idUser: user.recordset[0].idUser,
             isAdmin: user.recordset[0].bIsAdmin,
-            iat: Math.floor(Date.now() / 1000) - 30
         };
 
         const secretKey = config.get('secret');
-        const options = { expiresIn: '1h' };
+        const options = { expiresIn: '10h' };
 
         const token = await sign(payload, secretKey, options);
         const refreshToken = user.recordset[0].refreshToken;
@@ -108,6 +111,7 @@ export class UserService {
         return {
             access_token: token,
             refresh_token: refreshToken,
+            user: prepareUser(user.recordset[0])
         };
     }
 
@@ -115,8 +119,29 @@ export class UserService {
         const pool = await this.db;
         const user = await pool.request()
             .input('id', mssql.Int, userId)
-            .query('SELECT * FROM JUser WHERE id = @id');
+            .input('refreshToken', mssql.UniqueIdentifier, refreshToken)
+            .query('SELECT * FROM JUser WHERE id = @id AND refreshToken = @refreshToken');
 
+        const payload = {
+            idUser: user.recordset[0].idUser,
+            isAdmin: user.recordset[0].bIsAdmin,
+        };
+
+        const secretKey = config.get('secret');
+        const options = { expiresIn: '1h' };
+
+        const token = await sign(payload, secretKey, options);
+
+        return {
+            refresh_token: refreshToken,
+            access_token: token
+        };
 
     }
+}
+
+function prepareUser(user: any) {
+    const localUser = { ...user };
+    delete localUser['vPassword'];
+    return localUser;
 }

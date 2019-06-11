@@ -1,5 +1,4 @@
 import db from '../modules/db';
-import * as sqlstring from 'sqlstring';
 import { HttpError } from '../modules/errors/http.error';
 import logger from '../modules/logger';
 

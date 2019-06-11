@@ -23,24 +23,42 @@
                         <span v-if="$store.getters.cartCount" class="cart-counter">{{ $store.getters.cartCount }}</span>
                     </div>
                 </router-link>
-                <router-link to="/login">
-                    <icon :has-popup="true" :icon="faSignInAlt" :tooltip-text="'Sign in'"/>
+                <router-link to="/login" v-if="!auth">
+                    <icon :has-popup="false" :icon="faSignInAlt" :tooltip-text="'Sign in'"/>
                 </router-link>
-                <icon :has-popup="true" :icon="faTh" :tooltip-text="'More'"/>
+                <div v-else class="authed">
+                    <div @click="logout">
+                        <icon :has-popup="true" :icon="faSignOutAlt" :tooltip-text="'Sign out'"/>
+                    </div>
+                    <router-link to="/account">
+                        <icon :has-popup="true" :icon="faUserCircle" :tooltip-text="'Account'"/>
+                    </router-link>
+                    <router-link to="/admin" v-if="isAdmin" >
+                        <icon :has-popup="true" :icon="faTools" :tooltip-text="'Admin panel'"/>
+                    </router-link>
+                </div>
+
             </div>
         </div>
     </header>
 </template>
 
 <script>
-    import { faSearch } from '@fortawesome/free-solid-svg-icons';
-    import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-    import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-    import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-    import { faTh } from '@fortawesome/free-solid-svg-icons';
+    import {
+        faSearch,
+        faShoppingCart,
+        faSignInAlt,
+        faSignOutAlt,
+        faQuestionCircle,
+        faTh,
+        faUserCircle,
+        faTools,
+    } from '@fortawesome/free-solid-svg-icons';
     import Icon from './BaseIcon';
     import { SearchService } from '../services';
     import { ProductsMutations } from '../store/modules/products';
+    import { mapGetters } from 'vuex';
+    import { UserMutations } from '../store/modules/user';
 
     export default {
         name: 'Header',
@@ -53,15 +71,19 @@
                 faShoppingCart,
                 faSignInAlt,
                 faQuestionCircle,
+                faSignOutAlt,
                 faTh,
+                faTools,
+                faUserCircle,
                 state: 'close',
                 inputValue: '',
             };
         },
         computed: {
-            productCount: function () {
-                return this.$store.getters();
-            }
+            ...mapGetters([
+                'auth',
+                'isAdmin'
+            ])
         },
         methods: {
             search() {
@@ -72,6 +94,9 @@
                         return this.$store.commit(ProductsMutations.SET_PRODUCTS, products.data.data);
                     })
                     .then(() => this.$router.push('/search'));
+            },
+            logout() {
+                this.$store.commit(UserMutations.LOGOUT);
             }
         }
     };
@@ -186,4 +211,9 @@
             justify-content: center
             align-items: center
             color: $white
+
+    .authed
+        display: flex
+        justify-content: center
+        align-items: center
 </style>

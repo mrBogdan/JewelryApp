@@ -4,6 +4,7 @@ import { ISignupRequest } from '../../../interfaces/api/ISignupRequest';
 import { IUser } from '../../../interfaces/models/IUser';
 import { DEFAULT } from '../../../consts';
 import * as path from 'path';
+import * as jwt from 'jsonwebtoken';
 import { validator } from '../../../modules/validator';
 import { IValidatorProperty } from '../../../interfaces/modules/validator/IValidatorProperty';
 import {
@@ -25,6 +26,8 @@ export class UserController {
 
     public signup(req: ISignupRequest, res: Response, next: NextFunction) {
         let imagePath: string = DEFAULT;
+        console.log('BODY', req.body);
+        console.log('BODY', req.file);
 
         if (req.file) {
             imagePath = req.file.path;
@@ -54,7 +57,7 @@ export class UserController {
         const validatedEmail = this.validateEmail(email);
 
         if (validatedEmail.length) {
-            res.sendStatus(400).send(validatedEmail);
+            res.status(400).send(validatedEmail);
             return;
         }
 
@@ -69,7 +72,39 @@ export class UserController {
     }
 
     public refreshToken(req: Request, res: Response, next: NextFunction) {
+        let token = req.headers['authorization'];
+        const refreshToken = req.body.refreshToken;
 
+        if (token.startsWith('Bearer ')) {
+            token = token.slice(7, token.length);
+        }
+
+        const decoded = jwt.decode(token);
+        this.userService.refreshToken(decoded.idUser, refreshToken)
+            .then((data: any) => res.send(data))
+            .catch(next);
+    }
+
+    public getUserFromToken(req: any, res: any, next: any) {
+        const userId = req.decoded.idUser;
+
+        return this.userService.getUserById(userId)
+            .then(data => res.send(data))
+            .catch(next);
+    }
+
+    public getUser(req: any, res: any, next: any) {
+        try {
+            console.log('CED', req.decoded);
+            const userId = req.decoded.idUser;
+            console.log('11111 ', userId);
+
+            return this.userService.getUserById(userId)
+                .then(data => res.send(data))
+                .catch(next);
+        } catch (e) {
+            next(e);
+        }
     }
 
     private validateEmail(email: string) {

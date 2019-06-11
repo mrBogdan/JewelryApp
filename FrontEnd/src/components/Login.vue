@@ -10,6 +10,7 @@
 
 <script>
     import { UserService } from '../services';
+    import { UserMutations } from '../store/modules/user';
 
     export default {
         name: 'Login',
@@ -23,7 +24,13 @@
             login() {
                 const userService = new UserService();
 
-                userService.login();
+                userService.login(this.email, this.password)
+                    .then((user) => {
+                        this.$toast.success('Login');
+                        this.$store.commit(UserMutations.SET_USER, user);
+                        this.$router.push('/');
+                    })
+                    .catch(err => this.$toast.error('Incorrect email or password'));
             }
         }
     };

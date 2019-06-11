@@ -1,5 +1,5 @@
 <template>
-    <div class="sign-up-page">
+    <div  class="sign-up-page">
         <h2>{{ currentTab }}</h2>
         <div class="tabs">
             <div>
@@ -24,6 +24,7 @@
 <script>
     import login from '../components/Login';
     import signup from '../components/Signup';
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'SignUpPage',
@@ -39,6 +40,14 @@
         components: {
             login,
             signup
+        },
+        computed: {
+            ...mapGetters([
+                'auth'
+            ])
+        },
+        mounted() {
+            //if (this.auth) this.$router.push('/');
         }
     };
 </script>

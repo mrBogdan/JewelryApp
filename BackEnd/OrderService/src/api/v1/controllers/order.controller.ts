@@ -1,25 +1,30 @@
 import { NextFunction, Request, Response } from 'express';
-import db from '../../../modules/db';
+import { OrderService } from '../../../services/order.service';
+import { HttpError } from '../../../modules/errors/http.error';
+
+const orderService = new OrderService();
 
 export class OrderController {
     public async get(req: Request, res: Response, next: NextFunction) {
-        res.send('OK');
+        orderService.get()
+            .then((orders) => res.send(orders))
+            .catch(next);
     }
+
     public async create(req: Request, res: Response, next: NextFunction) {
         const user = req.body.user;
         const products = req.body.products;
-        // firstName: this.firstName,
-        //     lastName: this.lastName,
-        //     email: this.email,
-        //     address: this.address,
-        //     phone: this.phone
+        const price = req.body.price;
 
-        const pool = await db;
-        const result = await pool.request()
-            .query(`INSERT INTO JOrder 
-            (${user.id ? 'idUser,' : ''} firstName, lastName, email, phone, deliveryAddress, products, price)
-            VALUES(${user.id ? 'idUser,' : ''} ${user.firstName}, ${user.lastName}, ${user.email}, ${user.address}, ${user.phone})
-            `);
+        orderService.create(user, price, products)
+            .then((rowsAffected: any) => {
+                if (!rowsAffected.length) {
+                    throw new HttpError(500, 'Server error');
+                }
+
+                res.sendStatus(200);
+            })
+            .catch(next);
     }
 
     public update(req: Request, res: Response, next: NextFunction) {
@@ -27,6 +32,10 @@ export class OrderController {
     }
 
     public delete(req: Request, res: Response, next: NextFunction) {
+        const orderId = req.params.id;
 
+        orderService.delete(orderId)
+            .then(() => res.sendStatus(200))
+            .catch(next);
     }
 }

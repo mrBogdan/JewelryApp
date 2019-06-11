@@ -22,7 +22,8 @@
   import { LoaderMutations } from './store/modules/loader';
   import { CartActions, CartMutations } from './store/modules/cart';
   import Loader from './components/Loader';
-  import { OrderService } from './services';
+  import { OrderService, UserService } from './services';
+  import { UserActions } from './store/modules/user';
 
   export default {
     name: 'App',
@@ -47,10 +48,15 @@
     },
     created() {
       const orderService = new OrderService();
+      const userService = new UserService();
 
       this.$store.commit(LoaderMutations.START_LOADING);
       this.$store.dispatch(CartActions.SET_CART_PRODUCTS, orderService.getProducts());
       this.$store.dispatch( CategoriesActions.SET_ALL_CATEGORIES );
+
+      if (userService.getUserToken()) {
+        this.$store.dispatch(UserActions.SET_USER);
+      }
     },
     mounted() {
       this.$store.commit(LoaderMutations.STOP_LOADING);

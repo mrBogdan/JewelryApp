@@ -1,14 +1,14 @@
 <template>
     <div class="login-page">
-        <form @submit="validate" novalidate="true">
-            <input type="text" @focus="clearError" @blur="setError" :class="[ isError && !firstName ? 'error' : '' ]" v-model="firstName"
+        <form @submit="validate" novalidate="true" name="registerForm" enctype="multipart/form-data">
+            <input type="text" name="firstName" @focus="clearError" @blur="setError" :class="[ isError && !firstName ? 'error' : '' ]" v-model="firstName"
                    placeholder="Enter your first name" required/>
-            <input type="text" v-model="lastName" @focus="clearError" @blur="setError" :class="[ isError && !lastName ? 'error' : '' ]" placeholder="Enter your last name" required/>
-            <input type="email" v-model="email" @focus="clearError" @blur="setError" :class="[ isError && !email ? 'error' : '' ]" placeholder="Enter your email" required/>
-            <input type="text" v-model="address" @focus="clearError" @blur="setError" :class="[ isError && !address ? 'error' : '' ]" placeholder="Enter your address" required/>
-            <input type="tel" v-model="phone" @focus="clearError" @blur="setError" :class="[ isError && !phone ? 'error' : '' ]" placeholder="Enter your phone" required/>
-            <input type="file" name="imageFile"/>
-            <input type="password" @focus="clearError" @blur="setError" :class="[ isError && !password ? 'error' : '' ]" v-model="password" placeholder="Password" required/>
+            <input type="text" name="lastName" v-model="lastName" @focus="clearError" @blur="setError" :class="[ isError && !lastName ? 'error' : '' ]" placeholder="Enter your last name" required/>
+            <input type="email" name="email" v-model="email" @focus="clearError" @blur="setError" :class="[ isError && !email ? 'error' : '' ]" placeholder="Enter your email" required/>
+            <input type="text" name="address"  v-model="address" @focus="clearError" @blur="setError" :class="[ isError && !address ? 'error' : '' ]" placeholder="Enter your address" required/>
+            <input type="tel" name="phone"  v-model="phone" @focus="clearError" @blur="setError" :class="[ isError && !phone ? 'error' : '' ]" placeholder="Enter your phone" required/>
+            <input type="file" name="file" @change="setFile" />
+            <input type="password" name="password"  @focus="clearError" @blur="setError" :class="[ isError && !password ? 'error' : '' ]" v-model="password" placeholder="Password" required/>
             <button type="submit" class="btn ripple default" @click="signup">SignUp</button>
         </form>
     </div>
@@ -36,8 +36,15 @@
             signup(e) {
                 this.validate();
                 const userService = new UserService();
-                console.log('111');
-                userService.login();
+
+                const form = document.forms.namedItem('registerForm');
+                const fd = new FormData(form);
+
+                userService.registration(fd)
+                    .then(() => {
+                        this.$toast.success('Successfully registered')
+                    })
+                    .catch(err => this.$toast.error(err.response.data[0].errors[0]));
 
                 e.preventDefault();
             },
@@ -66,6 +73,9 @@
             setError(e) {
                 if (e.target.hasAttribute('required') && !e.target.value)
                     e.target.classList.add('error');
+            },
+            setFile(e) {
+                this.imageFile = e.target.files[0];
             }
         }
     };

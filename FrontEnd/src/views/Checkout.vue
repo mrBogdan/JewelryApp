@@ -1,13 +1,20 @@
 <template>
     <div class="checkout-page">
         <form @submit="validate" novalidate="true">
-            <input type="text" @focus="clearError" @blur="setError" :class="[ isError && !firstName ? 'error' : '' ]" v-model="firstName"
+            <input type="text" @focus="clearError" @blur="setError" :class="[ isError && !firstName ? 'error' : '' ]"
+                   v-model="firstName"
                    placeholder="Enter your first name" required/>
-            <input type="text" v-model="lastName" @focus="clearError" @blur="setError" :class="[ isError && !lastName ? 'error' : '' ]" placeholder="Enter your last name" required/>
-            <input type="email" v-model="email" @focus="clearError" @blur="setError" :class="[ isError && !email ? 'error' : '' ]" placeholder="Enter your email" required/>
-            <input type="text" v-model="address" @focus="clearError" @blur="setError" :class="[ isError && !address ? 'error' : '' ]" placeholder="Enter your address" required/>
-            <input type="tel" v-model="phone" @focus="clearError" @blur="setError" :class="[ isError && !phone ? 'error' : '' ]" placeholder="Enter your phone" required/>
-            <button type="submit" class="btn ripple default" @click="makeOrder">Make order {{ allPrice }} {{ currency }}</button>
+            <input type="text" v-model="lastName" @focus="clearError" @blur="setError"
+                   :class="[ isError && !lastName ? 'error' : '' ]" placeholder="Enter your last name" required/>
+            <input type="email" v-model="email" @focus="clearError" @blur="setError"
+                   :class="[ isError && !email ? 'error' : '' ]" placeholder="Enter your email" required/>
+            <input type="text" v-model="address" @focus="clearError" @blur="setError"
+                   :class="[ isError && !address ? 'error' : '' ]" placeholder="Enter your address" required/>
+            <input type="tel" v-model="phone" @focus="clearError" @blur="setError"
+                   :class="[ isError && !phone ? 'error' : '' ]" placeholder="Enter your phone" required/>
+            <button type="submit" class="btn ripple default" @click="makeOrder" :disabled="!allPrice">Make order {{
+                allPrice ? allPrice : 0 }} {{ currency }}
+            </button>
         </form>
     </div>
 </template>
@@ -15,16 +22,19 @@
 <script>
     import { OrderService } from '../services';
     import { mapGetters } from 'vuex';
+    import { CartMutations } from '../store/modules/cart';
 
     export default {
         name: 'Checkout',
         data: function () {
+            const user = this.user;
+
             return {
-                firstName: '',
-                lastName: '',
-                email: '',
-                address: '',
-                phone: '',
+                firstName: user ? user.vFirstName : '',
+                lastName: user ? user.vLastName : '',
+                email: user ? user.vEmail : '',
+                address: user ? user.vAddress : '',
+                phone: user ? user.vPhone : '',
                 isError: false,
             };
         },
@@ -42,7 +52,15 @@
                         phone: this.phone
                     };
 
-                    orderService.makeOrder(this.cartProducts, user);
+                    orderService.makeOrder(user, this.allPrice)
+                        .then(() => {
+                            this.$toast.success('Ordered');
+                            this.$router.push('/');
+                            this.$store.commit(CartMutations.CLEAR_CART);
+                        })
+                        .catch((err) => {
+                            this.$toast.error(err.message);
+                        });
                 }
 
                 e.preventDefault();
@@ -51,12 +69,13 @@
                 if (!this.firstName ||
                     !this.lastName ||
                     !this.email ||
-                    !this.password ||
                     !this.address ||
                     !this.phone
                 ) {
                     this.$toast.error('Every fields are required');
                     this.isError = true;
+                } else {
+                    this.isError = false;
                 }
 
             },
@@ -72,8 +91,18 @@
             ...mapGetters([
                 'allPrice',
                 'currency',
-                'cartProducts'
+                'cartProducts',
+                'user'
             ])
+        },
+        created() {
+            if (this.user) {
+                this.firstName = this.user.vFirstName;
+                this.lastName = this.user.vLastName;
+                this.email = this.user.vEmail;
+                this.address = this.user.vAddress;
+                this.phone = this.user.vPhone;
+            }
         }
     };
 </script>

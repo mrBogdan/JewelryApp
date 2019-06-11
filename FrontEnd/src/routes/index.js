@@ -8,6 +8,8 @@ import SignUpPage from '../views/SignUpPage';
 import CartPage from '../views/CartPage';
 import SearchPage from '../views/SearchPage';
 import Checkout from '../views/Checkout';
+import Account from '../views/Account';
+import Admin from '../views/Admin';
 
 export default [
     {
@@ -24,6 +26,16 @@ export default [
         path: '/checkout',
         name: 'checkout',
         component: Checkout
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: Account
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: Admin
     },
     {
         path: '/product/:id',

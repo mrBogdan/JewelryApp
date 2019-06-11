@@ -2,7 +2,8 @@
   "port": 9010,
   "services": {
     "JewelryContentService": "http://localhost:9020",
-    "UserService": "http://localhost:9030"
+    "UserService": "http://localhost:9030",
+    "OrderService": "http://localhost:9040"
   },
   "secret": "SOME_SECRET_KEY"
 }

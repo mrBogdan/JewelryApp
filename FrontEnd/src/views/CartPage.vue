@@ -33,7 +33,7 @@
                     <td></td>
                     <td></td>
                     <td>All price:</td>
-                    <td>{{ allPrice.toFixed(2) }} {{ currency }}</td>
+                    <td>{{ allPrice }} {{ currency }}</td>
                 </tr>
             </table>
         </div>
