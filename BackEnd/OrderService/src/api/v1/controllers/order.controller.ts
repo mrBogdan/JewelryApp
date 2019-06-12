@@ -5,13 +5,13 @@ import { HttpError } from '../../../modules/errors/http.error';
 const orderService = new OrderService();
 
 export class OrderController {
-    public async get(req: Request, res: Response, next: NextFunction) {
+    public get(req: Request, res: Response, next: NextFunction) {
         orderService.get()
             .then((orders) => res.send(orders))
             .catch(next);
     }
 
-    public async create(req: Request, res: Response, next: NextFunction) {
+    public create(req: Request, res: Response, next: NextFunction) {
         const user = req.body.user;
         const products = req.body.products;
         const price = req.body.price;

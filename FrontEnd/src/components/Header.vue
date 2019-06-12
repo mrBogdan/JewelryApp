@@ -28,15 +28,19 @@
                 </router-link>
                 <div v-else class="authed">
                     <div @click="logout">
-                        <icon :has-popup="true" :icon="faSignOutAlt" :tooltip-text="'Sign out'"/>
+                        <icon :icon="faSignOutAlt" :tooltip-text="'Sign out'"/>
                     </div>
                     <router-link to="/account">
-                        <icon :has-popup="true" :icon="faUserCircle" :tooltip-text="'Account'"/>
+                        <icon :icon="faUserCircle" :tooltip-text="'Account'"/>
                     </router-link>
-                    <router-link to="/admin" v-if="isAdmin" >
-                        <icon :has-popup="true" :icon="faTools" :tooltip-text="'Admin panel'"/>
+                    <router-link to="/admin" v-if="isAdmin">
+                        <icon :icon="faTools" :tooltip-text="'Admin panel'"/>
                     </router-link>
                 </div>
+                <div @click="openM">
+                    <icon :icon="faTools" :tooltip-text="'Pop up'"/>
+                </div>
+
 
             </div>
         </div>
@@ -97,6 +101,10 @@
             },
             logout() {
                 this.$store.commit(UserMutations.LOGOUT);
+            },
+            openM() {
+                console.log('open');
+                this.$emit('new');
             }
         }
     };

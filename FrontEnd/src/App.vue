@@ -4,7 +4,7 @@
       <Header></Header>
       <div class="page-container">
         <sidebar :title="sideBarTitle" class="side-bar" :categories-array="categories"></sidebar>
-        <router-view/>
+        <router-view />
       </div>
       <Footer></Footer>
     </div>
@@ -18,9 +18,8 @@
   import Sidebar from './components/Sidebar';
   import { CategoriesActions } from './store/modules/categories';
   import { mapGetters } from 'vuex';
-  import { ProductsActions } from './store/modules/products';
   import { LoaderMutations } from './store/modules/loader';
-  import { CartActions, CartMutations } from './store/modules/cart';
+  import { CartActions } from './store/modules/cart';
   import Loader from './components/Loader';
   import { OrderService, UserService } from './services';
   import { UserActions } from './store/modules/user';
@@ -35,12 +34,11 @@
     },
     data: function() {
       return {
-
       }
     },
     computed: {
       sideBarTitle: function () {
-        return 'Something';
+        return 'Categories';
       },
       ...mapGetters([
         'categories'

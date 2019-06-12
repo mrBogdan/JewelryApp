@@ -41,6 +41,8 @@
             addToCart() {
                 this.$store.dispatch(CartActions.SET_CART_PRODUCT, this.productItem);
             }
+        },
+        mounted() {
         }
     };
 </script>

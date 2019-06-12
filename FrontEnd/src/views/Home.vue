@@ -35,6 +35,11 @@
             ...mapGetters([
                 'products'
             ])
+        },
+        mounted() {
+          this.$emit('hello', {
+              name: 'Bogdan'
+          })
         }
     };
 </script>

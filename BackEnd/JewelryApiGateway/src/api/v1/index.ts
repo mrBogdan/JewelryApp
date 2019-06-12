@@ -9,6 +9,7 @@ app
     .use('/category', categoryRouter)
     .use('/product', productRouter)
     .use('/search', searchRouter)
+    .use('/about', searchRouter)
     .use('/order', orderRouter);
 
 export default app;
