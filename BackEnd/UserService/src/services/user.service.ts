@@ -91,8 +91,6 @@ export class UserService {
         }
         const match = await compare(password, user.recordset[0].vPassword);
 
-        console.log('USER: ', user);
-        console.log('Match: ', match);
         if (!match) {
             throw new HttpError(401, 'Password or email are incorrect');
         }
@@ -103,7 +101,7 @@ export class UserService {
         };
 
         const secretKey = config.get('secret');
-        const options = { expiresIn: '10h' };
+        const options = { expiresIn: '15m' };
 
         const token = await sign(payload, secretKey, options);
         const refreshToken = user.recordset[0].refreshToken;
@@ -120,7 +118,12 @@ export class UserService {
         const user = await pool.request()
             .input('id', mssql.Int, userId)
             .input('refreshToken', mssql.UniqueIdentifier, refreshToken)
-            .query('SELECT * FROM JUser WHERE id = @id AND refreshToken = @refreshToken');
+            .query('SELECT * FROM JUser WHERE idUser = @id AND refreshToken = @refreshToken');
+
+        const newRefreshToken = uuid();
+
+        await pool.request()
+            .query(`UPDATE JUser SET refreshToken = '${newRefreshToken}' WHERE idUser = ${userId}`);
 
         const payload = {
             idUser: user.recordset[0].idUser,
@@ -128,13 +131,14 @@ export class UserService {
         };
 
         const secretKey = config.get('secret');
-        const options = { expiresIn: '1h' };
+        const options = { expiresIn: '15m' };
 
         const token = await sign(payload, secretKey, options);
 
         return {
-            refresh_token: refreshToken,
-            access_token: token
+            refresh_token: newRefreshToken,
+            access_token: token,
+            user: user.recordset[0],
         };
 
     }
@@ -143,5 +147,6 @@ export class UserService {
 function prepareUser(user: any) {
     const localUser = { ...user };
     delete localUser['vPassword'];
+    delete localUser['refreshToken'];
     return localUser;
 }

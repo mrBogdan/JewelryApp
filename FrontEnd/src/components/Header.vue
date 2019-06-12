@@ -9,7 +9,7 @@
                     <div>
                         <icon :icon="faSearch" :on-click="search" class="search-icon"/>
                     </div>
-                    <input type="text" autocomplete="off" v-model="inputValue" class="search-field" name="search"
+                    <input type="text" autocomplete="off" @keypress.enter="search" v-model="inputValue" class="search-field" name="search"
                            placeholder="Search ... ">
                 </div>
             </div>
@@ -79,7 +79,6 @@
                 faTh,
                 faTools,
                 faUserCircle,
-                state: 'close',
                 inputValue: '',
             };
         },
@@ -92,12 +91,21 @@
         methods: {
             search() {
                 const ss = new SearchService();
-                console.log('search', this.inputValue);
+
+                if (!this.inputValue) {
+                    return;
+                }
+
                 ss.search(this.inputValue)
                     .then((products) => {
+                        this.$router.push('/search');
+                        
+                        if (!products.data.count) {
+                            return this.$toast.error('Products not found');
+                        }
+
                         return this.$store.commit(ProductsMutations.SET_PRODUCTS, products.data.data);
-                    })
-                    .then(() => this.$router.push('/search'));
+                    });
             },
             logout() {
                 this.$store.commit(UserMutations.LOGOUT);

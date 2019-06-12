@@ -9,7 +9,6 @@ const userService = new UserService(dbPromise);
 const userController = new UserController(userService);
 const router = express.Router();
 
-//userController.getUserFromToken.bind(userController)
 router
     .get('/get-user', userVerify, userController.getUserFromToken.bind(userController));
 

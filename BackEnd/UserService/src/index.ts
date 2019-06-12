@@ -6,7 +6,6 @@ import * as bodyParser from 'body-parser';
 import errorHttpHandler from './modules/handlers/errorHttpHandler';
 import * as cors from 'cors';
 
-const MSSQLStore = require('connect-mssql')(session);
 const morgan = require('morgan');
 const config = require('../config');
 

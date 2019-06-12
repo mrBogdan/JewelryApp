@@ -26,8 +26,6 @@ export class UserController {
 
     public signup(req: ISignupRequest, res: Response, next: NextFunction) {
         let imagePath: string = DEFAULT;
-        console.log('BODY', req.body);
-        console.log('BODY', req.file);
 
         if (req.file) {
             imagePath = req.file.path;
@@ -67,7 +65,6 @@ export class UserController {
     }
 
     public logout(req: Request, res: Response, next: NextFunction) {
-        console.log('DECODED: ', req['decoded']);
         res.sendStatus(200);
     }
 
@@ -80,6 +77,7 @@ export class UserController {
         }
 
         const decoded = jwt.decode(token);
+
         this.userService.refreshToken(decoded.idUser, refreshToken)
             .then((data: any) => res.send(data))
             .catch(next);
@@ -95,9 +93,7 @@ export class UserController {
 
     public getUser(req: any, res: any, next: any) {
         try {
-            console.log('CED', req.decoded);
             const userId = req.decoded.idUser;
-            console.log('11111 ', userId);
 
             return this.userService.getUserById(userId)
                 .then(data => res.send(data))

@@ -26,10 +26,24 @@ const actions = {
     [UserActions.SET_USER]({ commit }) {
         userService.getUserWithToken()
             .then((user) => {
+                console.log('UU', user);
                 commit(UserMutations.SET_USER, user.data);
             })
             .catch(error => {
-                this.$toast.error('Please clear cache, and reload page');
+                if (error.response.status === 401 && userService.getRefreshToken()) {
+                    console.log('refresh');
+                    
+                    userService.refreshToken()
+                        .then(res => {
+                            commit(UserMutations.SET_USER, res.data.user);
+
+                            userService.setUserToken(res.data.access_token);
+                            userService.setRefreshToken(res.data.refresh_token);
+                        })
+                        .catch(err => {
+                            userService.logout();
+                        });
+                }
             })
     }
 };

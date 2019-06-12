@@ -60,7 +60,12 @@ export class UserService extends BaseService {
     }
 
     refreshToken() {
-        return this.$http.post('/api/v1/user/refresh');
+        return this.$http.post('/api/v1/user/refresh', {
+            refreshToken: this.getRefreshToken()
+        },
+            {
+                headers: { 'Authorization': `Bearer ${this.getUserToken()}` }
+            });
     }
 
     registration(userFormData) {
