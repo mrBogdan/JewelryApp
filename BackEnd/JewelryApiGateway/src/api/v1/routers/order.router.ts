@@ -28,7 +28,20 @@ router
 
 router
     .route('/:id')
+    .get(expressHttpProxy(orderServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
+    }))
     .delete(expressHttpProxy(orderServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
+    }));
+
+router
+    .route('/by-email/:email')
+    .get(expressHttpProxy(orderServiceUrl, {
         proxyReqPathResolver: (req) => {
             return req.originalUrl;
         }

@@ -6,7 +6,7 @@ const config = require('../../../config');
 
 export default (req: Request, res: Response, next: NextFunction) => {
     let token: string | any = req.headers['authorization'];
-    
+
     if (!token) {
         throw new HttpError(403, 'Forbidden');
     }
@@ -23,6 +23,4 @@ export default (req: Request, res: Response, next: NextFunction) => {
             next();
         }
     });
-
-    next();
 }

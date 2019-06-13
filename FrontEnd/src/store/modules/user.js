@@ -19,12 +19,12 @@ const state = {
 const getters = {
     user: state => state.user,
     auth: state => state.auth,
-    isAdmin: state => state.user.bIsAdmin
+    isAdmin: state => state.user.bIsAdmin,
 };
 
 const actions = {
     [UserActions.SET_USER]({ commit }) {
-        userService.getUserWithToken()
+        return userService.getUserWithToken()
             .then((user) => {
                 console.log('UU', user);
                 commit(UserMutations.SET_USER, user.data);
@@ -39,6 +39,8 @@ const actions = {
 
                             userService.setUserToken(res.data.access_token);
                             userService.setRefreshToken(res.data.refresh_token);
+
+                            return res;
                         })
                         .catch(err => {
                             userService.logout();

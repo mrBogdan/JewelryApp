@@ -36,10 +36,10 @@
                     <router-link to="/admin" v-if="isAdmin">
                         <icon :icon="faTools" :tooltip-text="'Admin panel'"/>
                     </router-link>
-                </div>
+                </div><!--
                 <div @click="openM">
                     <icon :icon="faTools" :tooltip-text="'Pop up'"/>
-                </div>
+                </div>-->
 
 
             </div>

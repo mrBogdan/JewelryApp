@@ -1,10 +1,33 @@
 import { BaseService } from './BaseService';
+import { UserService } from './UserService';
+
+const us = new UserService();
 
 const CART = 'CART';
 
 export class OrderService extends BaseService {
     getOrders() {
-        return this.$http.get('/api/v1/order');
+        return this.$http.get('/api/v1/order',{
+            headers: {
+                'Authorization': us.getUserToken()
+            }
+        });
+    }
+
+    getOrderById(id) {
+        return this.$http.get(`/api/v1/order/${id}`, {
+            headers: {
+                'Authorization': us.getUserToken()
+            }
+        });
+    }
+
+    getOrderByEmail(email) {
+        return this.$http.get(`/api/v1/order/by-email/${email}`, {
+            headers: {
+                'Authorization': us.getUserToken()
+            }
+        });
     }
 
     removeOrder(id) {

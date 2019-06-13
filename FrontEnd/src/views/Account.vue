@@ -1,15 +1,18 @@
 <template>
     <div v-if="auth">
         <h2>Account</h2>
-        <div class="user-info">
-            <div class="user-ava">
-                <img :src="user.vImageUrl" alt="User image">
+        <div>
+            <div class="user-info">
+                <div class="user-ava">
+                    <img :src="user.vImageUrl" alt="User image">
+                </div>
+                <div>
+                    <p>User name: <b>{{ user.vFirstName }} {{ user.vLastName }}</b></p>
+                    <p>Email: <b>{{ user.vEmail }}</b></p>
+                    <p>Phone: <b>{{ user.vPhone }}</b></p>
+                </div>
             </div>
-            <div>
-                <p>User name: <b>{{ user.vFirstName }} {{ user.vLastName }}</b></p>
-                <p>Email: <b>{{ user.vEmail }}</b></p>
-                <p>Phone: <b>{{ user.vPhone }}</b></p>
-            </div>
+            <order-table :orders="orders"></order-table>
         </div>
     </div>
     <div v-else><h2>Unauthorized</h2></div>
@@ -17,14 +20,16 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import OrderTable from '../components/OrderTable';
 
     export default {
         name: 'Account',
+        components: { OrderTable },
         computed: {
             ...mapGetters([
                 'user',
                 'auth',
-                'isAdmin'
+                'orders'
             ])
         },
     };
@@ -35,6 +40,7 @@
 
     .user-info
         display: flex
+
         & > *
             margin-right: 20px
 

@@ -1,11 +1,30 @@
 import { NextFunction, Request, Response } from 'express';
 import db from '../modules/db';
+import * as sql from 'mssql';
 
 export class OrderService {
     public async get() {
         const pool = await db;
         const result = await pool.request()
             .query(`SELECT * FROM JOrders`);
+
+        return result.recordsets[0];
+    }
+
+    public async getById(id: number) {
+        const pool = await db;
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(`SELECT * FROM JOrders WHERE idOrder = @id`);
+
+        return result.recordset[0];
+    }
+
+    public async getByEmail(email: string) {
+        const pool = await db;
+        const result = await pool.request()
+            .input('email', sql.NVarChar(50), email)
+            .query(`SELECT * FROM JOrders WHERE email = @email`);
 
         return result.recordsets[0];
     }

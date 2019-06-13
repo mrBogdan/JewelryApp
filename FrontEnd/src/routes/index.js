@@ -10,6 +10,7 @@ import SearchPage from '../views/SearchPage';
 import Checkout from '../views/Checkout';
 import Account from '../views/Account';
 import Admin from '../views/Admin';
+import OrderInfo from '../views/OrderInfo';
 
 export default [
     {
@@ -35,7 +36,12 @@ export default [
     {
         path: '/admin',
         name: 'admin',
-        component: Admin
+        component: Admin,
+    },
+    {
+        path: '/order/:id',
+        name: 'order-info',
+        component: OrderInfo
     },
     {
         path: '/product/:id',

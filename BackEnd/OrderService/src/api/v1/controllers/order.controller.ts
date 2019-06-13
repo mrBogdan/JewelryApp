@@ -6,8 +6,27 @@ const orderService = new OrderService();
 
 export class OrderController {
     public get(req: Request, res: Response, next: NextFunction) {
+        console.log(req['decoded']);
+        if (req['decoded'].isAdmin != 1) throw new HttpError(403, 'Forbidden');
+
         orderService.get()
             .then((orders) => res.send(orders))
+            .catch(next);
+    }
+
+    public getByEmail(req: Request, res: Response, next: NextFunction) {
+        const email = req.params.email;
+
+        orderService.getByEmail(email)
+            .then((orders) => res.send(orders))
+            .catch(next);
+    }
+
+    public getById(req: Request, res: Response, next: NextFunction) {
+        const id = req.params.id;
+
+        orderService.getById(id)
+            .then((order) => res.send(order))
             .catch(next);
     }
 

@@ -68,11 +68,7 @@
             }),
         },
         methods: {
-            remove(product) {
-                this.$store.dispatch(CartActions.REMOVE_PRODUCT_FROM_CART, product);
-            },
             makeOrder() {
-                console.log('ORDERED');
                 this.$router.push('/checkout');
             }
         }
