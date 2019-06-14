@@ -46,7 +46,6 @@
 <script>
     import Icon from '../components/BaseIcon';
     import { faTrashAlt, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons';
-    import { CartActions } from '../store/modules/cart';
     import { mapGetters } from 'vuex';
 
     export default {

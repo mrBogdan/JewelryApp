@@ -32,15 +32,18 @@ const actions = {
         const products = await productService.getAllProducts();
         commit(ProductsMutations.SET_PRODUCTS, products.data.data);
         commit(ProductsMutations.SET_PRODUCT_COUNT, products.data.count);
+        return products;
     },
 
     async [ProductsActions.SET_BY_CATEGORY]({ commit }, idCategory) {
         const products = await productService.getProductsByCategoryId(idCategory);
         commit(ProductsMutations.SET_PRODUCTS, products.data.data);
+        return products;
     },
     async [ProductsActions.GET_BY_ID]({ commit }, id) {
         const product = await productService.getProductById(id);
         commit(ProductsMutations.SET_PRODUCT, product.data.data);
+        return product;
     },
 };
 

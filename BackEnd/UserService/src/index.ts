@@ -1,6 +1,5 @@
 import * as express from 'express';
 import logger from './modules/logger'
-import * as session from 'express-session'
 import api from './api/v1';
 import * as bodyParser from 'body-parser';
 import errorHttpHandler from './modules/handlers/errorHttpHandler';

@@ -31,8 +31,6 @@ const actions = {
             })
             .catch(error => {
                 if (error.response.status === 401 && userService.getRefreshToken()) {
-                    console.log('refresh');
-                    
                     userService.refreshToken()
                         .then(res => {
                             commit(UserMutations.SET_USER, res.data.user);
@@ -46,7 +44,7 @@ const actions = {
                             userService.logout();
                         });
                 }
-            })
+            });
     }
 };
 
@@ -68,4 +66,4 @@ export default {
     getters,
     actions,
     mutations
-}
+};

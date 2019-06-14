@@ -11,6 +11,7 @@ import Checkout from '../views/Checkout';
 import Account from '../views/Account';
 import Admin from '../views/Admin';
 import OrderInfo from '../views/OrderInfo';
+import ProductCreate from '../components/ProductCreate';
 
 export default [
     {
@@ -42,6 +43,11 @@ export default [
         path: '/order/:id',
         name: 'order-info',
         component: OrderInfo
+    },
+    {
+        path: '/product/create',
+        name: 'createProduct',
+        component: ProductCreate
     },
     {
         path: '/product/:id',

@@ -2,7 +2,7 @@ import * as multer from 'multer';
 import { Request } from 'express';
 import * as fs from 'fs';
 
-const config = require('../../../config');
+const config = require('../../../config/index');
 
 const storage = multer.diskStorage({
     destination: (req: Request, file: Express.Multer.File, callback: any) => {

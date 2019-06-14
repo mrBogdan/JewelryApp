@@ -26,7 +26,7 @@
             product,
         },
         created() {
-            this.$store.dispatch( ProductsActions.SET_ALL_PRODUCTS);
+            this.$store.dispatch(ProductsActions.SET_ALL_PRODUCTS);
         },
         computed: {
             categoryName: function () {

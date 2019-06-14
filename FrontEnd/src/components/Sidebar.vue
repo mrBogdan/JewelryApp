@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar-container">
+    <div class="sidebar-container" v-if="isShow">
         <h2>{{ title }} <i class="fa fa-id-card" aria-hidden="true"></i></h2>
         <ul class="category-list">
             <li v-if="category.isActive" v-for="(category, index) in categoriesArray" :key="index" class="category-item">
@@ -14,7 +14,8 @@
         name: 'Sidebar',
         props: [
             'title',
-            'categoriesArray'
+            'categoriesArray',
+            'isShow'
         ]
     };
 </script>

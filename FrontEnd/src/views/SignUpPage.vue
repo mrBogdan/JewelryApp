@@ -47,7 +47,7 @@
             ])
         },
         mounted() {
-            //if (this.auth) this.$router.push('/');
+            if (this.auth) this.$router.push('/');
         }
     };
 </script>
@@ -55,9 +55,6 @@
 <style scoped lang="sass">
     @import "../styles/button"
     @import "../styles/colors"
-
-    .active
-        border: 1px solid $black
 
     .tab-caption
         width: 150px

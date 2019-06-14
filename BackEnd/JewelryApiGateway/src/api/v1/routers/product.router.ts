@@ -28,6 +28,11 @@ router
         proxyReqPathResolver: (req) => {
             return req.originalUrl;
         }
+    }))
+    .delete(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        }
     }));
 
 router
@@ -36,6 +41,15 @@ router
         proxyReqPathResolver: (req) => {
             return req.originalUrl;
         }
+    }));
+
+router
+    .route('/create')
+    .post(expressHttpProxy(contentServiceUrl, {
+        proxyReqPathResolver: (req) => {
+            return req.originalUrl;
+        },
+        parseReqBody: false
     }));
 
 export default router;

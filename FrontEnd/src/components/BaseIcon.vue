@@ -4,19 +4,16 @@
             <font-awesome-icon :icon="icon" size="lg" />
         </button>
         <tooltip :position="tooltipPosition" :show="showTooltip" >{{ tooltipText }}</tooltip>
-        <popup :pop-up-items="popupItems" :to-open="showPopup && hasPopup"></popup>
     </div>
 </template>
 
 <script>
     import Tooltip from './BaseTooltip'
-    import Popup from './Popup/Popup'
 
     export default {
         name: 'Icon',
         components: {
             Tooltip,
-            Popup,
         },
         data: function() {
             return {
@@ -45,9 +42,6 @@
               type: Function,
               default: () => {},
             },
-            popupItems: {
-                type: []
-            }
         },
         methods: {
             showTooltipMethod(doShow) {

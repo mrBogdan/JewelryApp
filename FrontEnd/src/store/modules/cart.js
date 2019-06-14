@@ -50,12 +50,13 @@ const actions = {
         const counts = products.products.map( item => item.count);
 
         if (ids.length) {
-            productService.getProductsByIds(ids)
+           return productService.getProductsByIds(ids)
                 .then((products) => {
                     const productsArray = products.data.data;
                     const extendedProducts = counts.map( (item, index) => ({ count: item, product: productsArray[index] }) );
 
                     commit(CartMutations.SET_CART_PRODUCTS, extendedProducts);
+                    return extendedProducts;
                 });
         }
 

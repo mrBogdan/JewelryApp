@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="auth">
         <table>
             <tr>
                 <th>Order id</th>
@@ -54,6 +54,8 @@
     import { mapGetters } from 'vuex';
     import Icon from '../components/BaseIcon';
     import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+    import { LoaderMutations } from '../store/modules/loader';
+    import { OrderService } from '../services';
 
     export default {
         name: 'OrderTable',
@@ -61,13 +63,39 @@
         data: function () {
             return {
                 faTrashAlt,
+                orders: []
             };
         },
-        props: [
-            'orders'
-        ],
+        created() {
+            this.$store.commit(LoaderMutations.START_LOADING);
+            const orderService = new OrderService();
+
+            orderService.getOrders()
+                .then((orders) => {
+                    this.orders = orders.data;
+                    this.$store.commit(LoaderMutations.STOP_LOADING);
+                })
+                .catch((err) => console.log(err));
+        },
+        methods: {
+            removeOrder(id) {
+                const orderService = new OrderService();
+
+                orderService.removeOrder(id)
+                    .then(() => {
+                        this.orders.forEach((item, idx) => {
+                            if (item.idOrder === id) {
+                                this.orders.splice(idx, 1);
+                            }
+                        });
+                        this.$toast.success('Removed');
+                    })
+                    .catch((err) => this.$toast.error(err.message));
+            }
+        },
         computed: {
             ...mapGetters([
+                'auth',
                 'isAdmin'
             ]),
         }

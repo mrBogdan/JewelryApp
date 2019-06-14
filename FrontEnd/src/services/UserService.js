@@ -21,8 +21,7 @@ export class UserService extends BaseService {
             })
             .then((auth) => {
                 this.setUserToken(auth.data.access_token);
-                this.setRefreshToken(auth.data.refresh_token);
-                console.log('AUTH', auth);
+                this.setRefreshToken(auth.data.refresh_token);;
 
                 return auth.data.user;
             });

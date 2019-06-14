@@ -3,7 +3,7 @@
         <div class="page-wrapper">
             <Header></Header>
             <div class="page-container">
-                <sidebar :title="sideBarTitle" class="side-bar" :categories-array="categories"></sidebar>
+                <sidebar :is-show="isShowSidebar" :title="sideBarTitle" class="side-bar" :categories-array="categories"></sidebar>
                 <router-view/>
             </div>
             <Footer></Footer>
@@ -24,6 +24,7 @@
     import { OrderService, UserService } from './services';
     import { UserActions } from './store/modules/user';
     import { OrderActions } from './store/modules/order';
+    import Bus from './utils/bus';
 
     export default {
         name: 'App',
@@ -34,7 +35,9 @@
             Sidebar,
         },
         data: function () {
-            return {};
+            return {
+                isShowSidebar: true,
+            };
         },
         computed: {
             sideBarTitle: function () {
@@ -45,6 +48,13 @@
                 'user'
             ])
         },
+        methods: {
+          toggleSidebar() {
+              this.isShowSidebar = !this.isShowSidebar;
+              
+              document.body.getElementsByClassName('page-container')[0].classList.toggle('one-column');
+          }
+        },
         created() {
             const orderService = new OrderService();
             const userService = new UserService();
@@ -52,7 +62,6 @@
             if (userService.getUserToken()) {
                 this.$store.dispatch(UserActions.SET_USER)
                     .then(() => {
-                        console.log('OSS', this.user);
                         return this.$store.dispatch(OrderActions.LOAD_ORDERS_BY_EMAIL, this.user.vEmail)
                     })
                     .catch(err => console.error(err));
@@ -62,6 +71,7 @@
             this.$store.dispatch(CartActions.SET_CART_PRODUCTS, orderService.getProducts());
             this.$store.dispatch(CategoriesActions.SET_ALL_CATEGORIES);
 
+            Bus.$on('toggle-sidebar', () => this.toggleSidebar());
         },
         mounted() {
             this.$store.commit(LoaderMutations.STOP_LOADING);
@@ -80,6 +90,9 @@
         grid-column-gap: 5%
         height: 100%
         width: 100%
+
+    .one-column
+        grid-template-columns: 100% !important
 
     @media screen and (max-width: 768px)
         .page-container

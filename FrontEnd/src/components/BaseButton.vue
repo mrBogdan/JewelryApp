@@ -1,5 +1,7 @@
 <template>
-    
+    <button class="btn ripple default">
+        <slot>Default button text</slot>
+    </button>
 </template>
 
 <script>
@@ -8,6 +10,6 @@
     };
 </script>
 
-<style scoped>
-
+<style scoped lang="sass">
+    @import "../styles/button"
 </style>

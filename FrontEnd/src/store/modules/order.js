@@ -22,8 +22,6 @@ const actions = {
     [OrderActions.LOAD_ORDERS_BY_EMAIL]({ commit }, email) {
         return os.getOrderByEmail(email)
             .then(res => {
-                console.log('ORD', res);
-                console.log('ORD', email);
                 commit(OrderMutations.SET_ORDERS, res.data);
                 return res;
             });

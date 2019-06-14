@@ -12,7 +12,7 @@ import api from './api/v1';
 const PORT = config.get('port');
 
 app
-    .use(bodyParser.urlencoded({ extended: false, limit: '10mb' }))
+    .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json({ limit: '10mb' }))
     .use(morgan(':method :url :status :response-time ms'))
     .use('/api/v1/', api)

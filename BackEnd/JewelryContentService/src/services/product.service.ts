@@ -86,4 +86,41 @@ export class ProductService {
             throw new HttpError(500, 'Server error');
         }
     }
+
+    public async deleteById(id: number) {
+        try {
+            const pool = await db;
+            const result: any = await pool.request()
+                .input('id', sql.Int, id)
+                .query(`DELETE FROM JProduct WHERE idProduct = @id`);
+
+            return {
+                result
+            };
+        } catch (e) {
+            logger.error(e);
+            throw new HttpError(500, 'Server error');
+        }
+    }
+
+    public async create(product: any) {
+        try {
+            const pool = await db;
+            const result: any = await pool.request()
+                .input('name', sql.NVarChar(50), product.productName)
+                .input('productDescr', sql.NVarChar(50), product.productDescr)
+                .input('imagePath', sql.NVarChar(255), product.imagePath)
+                .input('idCategory', sql.Int, product.idCategory)
+                .input('price', sql.Float, product.price)
+                .query(`INSERT INTO JProduct (productName, productDescr, imagePath, idCategory, price)
+                VALUES (@name, @productDescr, @imagePath, @idCategory, @price)`);
+
+            return {
+                result
+            };
+        } catch (e) {
+            logger.error(e);
+            throw new HttpError(500, 'Server error');
+        }
+    }
 }

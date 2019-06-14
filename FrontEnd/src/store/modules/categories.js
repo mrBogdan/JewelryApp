@@ -24,6 +24,7 @@ const actions = {
         const categoryService = new CategoryService();
         const categories = await categoryService.getCategories();
         commit(CategoriesMutations.SET_CATEGORIES, categories.data.data);
+        return categories;
     }
 
 

@@ -21,6 +21,7 @@
 <script>
     import { mapGetters } from 'vuex';
     import OrderTable from '../components/OrderTable';
+    import Bus from '../utils/bus';
 
     export default {
         name: 'Account',
@@ -32,6 +33,13 @@
                 'orders'
             ])
         },
+        mounted() {
+            Bus.$emit('toggle-sidebar');
+        },
+        destroyed() {
+            Bus.$emit('toggle-sidebar');
+        }
+
     };
 </script>
 
