@@ -12,7 +12,7 @@
                     <p>Phone: <b>{{ user.vPhone }}</b></p>
                 </div>
             </div>
-            <order-table :orders="orders"></order-table>
+            <order-table :orders="userOrders"></order-table>
         </div>
     </div>
     <div v-else><h2>Unauthorized</h2></div>
@@ -30,7 +30,8 @@
             ...mapGetters([
                 'user',
                 'auth',
-                'orders'
+                'orders',
+                'userOrders'
             ])
         },
         mounted() {

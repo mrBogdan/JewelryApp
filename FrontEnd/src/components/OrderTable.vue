@@ -98,6 +98,9 @@
                 'auth',
                 'isAdmin'
             ]),
+        },
+        mounted() {
+            this.$store.commit(LoaderMutations.STOP_LOADING);
         }
     };
 </script>

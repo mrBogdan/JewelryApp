@@ -54,7 +54,7 @@ const mutations = {
         state.auth = true;
     },
     [UserMutations.LOGOUT](state) {
-        delete state.user;
+        state.user = {};
         state.auth = false;
 
         userService.logout();
