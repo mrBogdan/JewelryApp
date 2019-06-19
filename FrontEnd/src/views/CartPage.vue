@@ -16,7 +16,8 @@
                 </tr>
                 <tr v-for="product in products">
                     <td>
-                        <router-link class="default-link" :to="{ name: 'product', params: { id: product.product.idProduct } }">{{
+                        <router-link class="default-link"
+                                     :to="{ name: 'product', params: { id: product.product.idProduct } }">{{
                             product.product.productName }}
                         </router-link>
                     </td>
@@ -47,6 +48,7 @@
     import Icon from '../components/BaseIcon';
     import { faTrashAlt, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons';
     import { mapGetters } from 'vuex';
+    import { CartActions } from '../store/modules/cart';
 
     export default {
         name: 'CartPage',
@@ -67,6 +69,9 @@
             }),
         },
         methods: {
+            remove(product) {
+                this.$store.dispatch(CartActions.REMOVE_PRODUCT_FROM_CART, product);
+            },
             makeOrder() {
                 this.$router.push('/checkout');
             }
