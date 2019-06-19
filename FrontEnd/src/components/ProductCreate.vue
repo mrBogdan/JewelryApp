@@ -1,7 +1,7 @@
 <template>
     <form name="createProduct" enctype="multipart/form-data">
         <input type="text" name="productName" v-model="productName" required placeholder="Product name">
-        <textarea name="productDescr" v-model="productDescr" placeholder="Descripton"></textarea>
+        <textarea name="productDescr" v-model="productDescr" placeholder="Description"></textarea>
         <label>
             Category: <select name="idCategory">
             <option v-for="category in categories" :value="category.idCategory">{{ category.categoryName }}</option>
@@ -9,15 +9,19 @@
         </label>
         <input type="text" name="price" v-model="price" required placeholder="Price">
         <input type="file" name="file" required>
-        <button type="submit" name="submit" @click="createProduct" class="btn ripple default">Create</button>
+        <base-button name="submit" @click-event="createProduct">Create</base-button>
     </form>
 </template>
 
 <script>
     import { CategoryService, ProductService } from '../services';
+    import BaseButton from './BaseButton'
 
     export default {
         name: 'ProductCreate',
+        components: {
+          BaseButton
+        },
         data: function() {
           return {
               productName: '',

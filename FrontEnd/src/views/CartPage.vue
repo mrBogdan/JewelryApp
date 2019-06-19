@@ -2,10 +2,9 @@
     <div class="cart-page">
         <div v-if="$store.getters.cartCount">
             <h2>Cart</h2>
-            <button @click="makeOrder" class="btn ripple order">
-                <icon :icon="faMoneyCheckAlt" class="no-hover no-ripple" title="Make order"/>
-                <span>Make order</span>
-            </button>
+            <base-button :icon="faMoneyCheckAlt" @click-event="makeOrder" class="btn ripple order">
+                Make order
+            </base-button>
             <table class="cart-table">
                 <tr style="text-align: left">
                     <th>Name</th>
@@ -46,6 +45,7 @@
 
 <script>
     import Icon from '../components/BaseIcon';
+    import BaseButton from '../components/BaseButton';
     import { faTrashAlt, faMoneyCheckAlt } from '@fortawesome/free-solid-svg-icons';
     import { mapGetters } from 'vuex';
     import { CartActions } from '../store/modules/cart';
@@ -53,7 +53,8 @@
     export default {
         name: 'CartPage',
         components: {
-            Icon
+            Icon,
+            BaseButton
         },
         data: function () {
             return {

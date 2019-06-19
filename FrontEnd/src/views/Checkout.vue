@@ -12,9 +12,9 @@
                    :class="[ isError && !address ? 'error' : '' ]" placeholder="Enter your address" required/>
             <input type="tel" v-model="phone" @focus="clearError" @blur="setError"
                    :class="[ isError && !phone ? 'error' : '' ]" placeholder="Enter your phone" required/>
-            <button type="submit" class="btn ripple default" @click="makeOrder" :disabled="!allPrice">Make order {{
+            <base-button @click-event="makeOrder" :disabled="!allPrice">Make order {{
                 allPrice ? allPrice : 0 }} {{ currency }}
-            </button>
+            </base-button>
         </form>
     </div>
 </template>
@@ -23,9 +23,13 @@
     import { OrderService } from '../services';
     import { mapGetters } from 'vuex';
     import { CartMutations } from '../store/modules/cart';
+    import BaseButton from '../components/BaseButton';
 
     export default {
         name: 'Checkout',
+        components: {
+            BaseButton
+        },
         data: function () {
             const user = this.user;
 
@@ -40,6 +44,7 @@
         },
         methods: {
             makeOrder(e) {
+                e.preventDefault();
                 this.validate();
                 const orderService = new OrderService();
 
@@ -62,8 +67,6 @@
                             this.$toast.error(err.message);
                         });
                 }
-
-                e.preventDefault();
             },
             validate() {
                 if (!this.firstName ||

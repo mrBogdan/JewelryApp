@@ -3,7 +3,7 @@
         <form>
             <input type="email" v-model="email" placeholder="Enter your email">
             <input type="password" v-model="password" placeholder="Password">
-            <button type="submit" class="btn ripple default" @click.prevent="login">Login</button>
+            <base-button @click-event="login">Login</base-button>
         </form>
     </div>
 </template>
@@ -11,9 +11,13 @@
 <script>
     import { UserService } from '../services';
     import { UserMutations } from '../store/modules/user';
+    import BaseButton from './BaseButton';
 
     export default {
         name: 'Login',
+        components: {
+            BaseButton
+        },
         data: function () {
             return {
                 email: '',
@@ -21,7 +25,7 @@
             }
         },
         methods: {
-            login() {
+            login(e) {
                 const userService = new UserService();
 
                 userService.login(this.email, this.password)

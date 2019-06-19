@@ -9,16 +9,20 @@
             <input type="tel" name="phone"  v-model="phone" @focus="clearError" @blur="setError" :class="[ isError && !phone ? 'error' : '' ]" placeholder="Enter your phone" required/>
             <input type="file" name="file" @change="setFile" />
             <input type="password" name="password"  @focus="clearError" @blur="setError" :class="[ isError && !password ? 'error' : '' ]" v-model="password" placeholder="Password" required/>
-            <button type="submit" class="btn ripple default" @click="signup">SignUp</button>
+            <base-button @click-event="signup">SignUp</base-button>
         </form>
     </div>
 </template>
 
 <script>
     import { UserService } from '../services';
+    import BaseButton from './BaseButton';
 
     export default {
         name: 'Signup',
+        components: {
+          BaseButton
+        },
         data: function () {
             return {
                 firstName: '',

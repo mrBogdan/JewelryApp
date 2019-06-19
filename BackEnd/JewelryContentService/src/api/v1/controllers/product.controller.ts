@@ -59,8 +59,6 @@ export class ProductController {
             imagePath = req.file.path;
         }
 
-        console.log('res', req.body);
-
         uploadToStorageService(imagePath)
             .then((filePath: string) => {
 

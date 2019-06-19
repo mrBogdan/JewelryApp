@@ -15,7 +15,7 @@
                             <span class="price__currency">{{ product.currency }}</span>
                         </div>
                         <div>
-                            <button class="btn ripple cart" @click="addToCart">Add to cart</button>
+                            <base-button @click-event="addToCart">Add to cart</base-button>
                         </div>
                     </div>
                     <div class="description">
@@ -29,14 +29,15 @@
 
 <script>
     import { ProductService } from '../services';
-    import { OrderService } from '../services';
     import { LoaderMutations } from '../store/modules/loader';
     import { CartActions } from '../store/modules/cart';
-
-    const orderService = new OrderService();
+    import BaseButton from '../components/BaseButton';
 
     export default {
         name: 'ProductPage',
+        components: {
+            BaseButton
+        },
         data: function () {
             return {
                 product: ''
@@ -61,6 +62,7 @@
         },
         methods: {
             addToCart() {
+                console.log('ADD');
                 this.$store.dispatch(CartActions.SET_CART_PRODUCT, this.product);
             }
         }
@@ -96,11 +98,5 @@
 
         & > *
             margin: 10px 0
-
-    .cart
-        width: 250px
-        height: 50px
-        background-color: $medium-grey
-        font: 16px / 24px Arial, sans-serif
 
 </style>

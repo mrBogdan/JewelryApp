@@ -2,9 +2,9 @@
     <div>
         <div>
             <router-link to="/product/create">
-                <button class="btn ripple default">
+                <base-button>
                     Create new product
-                </button>
+                </base-button>
             </router-link>
         </div>
         <div class="products">
@@ -33,7 +33,7 @@
 
 <script>
     import { ProductService } from '../services';
-    import Button from '../components/BaseButton';
+    import BaseButton from '../components/BaseButton';
     import icon from '../components/BaseIcon';
     import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -41,7 +41,7 @@
 
     export default {
         name: 'AdminProducts',
-        components: { Button, icon },
+        components: { BaseButton, icon },
         data: function () {
             return {
                 faTrashAlt,
