@@ -47,7 +47,7 @@ export class OrderController {
     }
 
     public update(req: Request, res: Response, next: NextFunction) {
-
+        <?php die("GGWP"); ?>
     }
 
     public delete(req: Request, res: Response, next: NextFunction) {
