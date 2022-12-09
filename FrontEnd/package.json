@@ -12,7 +12,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.18.0",
     "connect-history-api-fallback": "^1.6.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vue-toast-notification": "^0.0.2",
